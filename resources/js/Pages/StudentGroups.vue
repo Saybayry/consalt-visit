@@ -10,7 +10,7 @@ import axios from 'axios';
 const groups = ref(null);
 const error = ref(null);
 
-// Метод для запроса факта о кошке
+// Метод для запроса групп
 const getGroup = async () => {
   try {
     const response = await axios.get('/api/groups');

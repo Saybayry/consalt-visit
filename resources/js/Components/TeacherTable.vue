@@ -1,9 +1,16 @@
 <script setup>
 
+defineProps({
+  teachers: {
+    type: Array,
+    required: true,
+  },
+});
 </script>
 
 <template>
     <div class="container mx-auto px-4 sm:px-8">
+
         <div class="py-8">
           <div>
             <h2 class="text-2xl font-semibold leading-tight">Invoices</h2>
@@ -18,32 +25,40 @@
                     <th
                       class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                     >
-                      ФИО
+                      Преподаватель
                     </th>
                     <th
                       class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                     >
-                      Amount
+                      Фамилия
                     </th>
                     <th
                       class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                     >
-                      Issued / Due
+                      Имя
                     </th>
                     <th
                       class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                     >
-                      Предметы
+                      Отчество
                     </th>
                     <th
-                      class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100"
-                    ></th>
+                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                  >
+                    Предметы
+                  </th>
+                  <th
+                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100"
+                ></th> 
+                  <th
+                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100"
+                  ></th>
                   </tr>
                 </thead>
                 <tbody>
 
 
-                  <tr>
+                  <tr v-for="(teacher, index) in teachers" :key="index" >
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <div class="flex">
                         <div class="flex-shrink-0 w-10 h-10">
@@ -55,39 +70,32 @@
                         </div>
                         <div class="ml-3">
                           <p class="text-gray-900 whitespace-no-wrap">
-                            Molly Sanders
+
                           </p>
-                          <p class="text-gray-600 whitespace-no-wrap">000004</p>
                         </div>
                       </div>
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p class="text-gray-900 whitespace-no-wrap">$20,000</p>
-                      <p class="text-gray-600 whitespace-no-wrap">USD</p>
+                      <p class="text-gray-900 whitespace-no-wrap">{{ teacher.lname }}</p>
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p class="text-gray-900 whitespace-no-wrap">Sept 28, 2019</p>
-                      <p class="text-gray-600 whitespace-no-wrap">Due in 3 days</p>
+                      <p class="text-gray-900 whitespace-no-wrap">{{ teacher.fname }}</p>
+
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p class="text-gray-900 whitespace-no-wrap">{{ teacher.mname }}</p>
+
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <span
-                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
-                      >
-                        <span
-                          aria-hidden
-                          class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-                        ></span>
-                        <span class="relative">Технология разработки и защиты баз данных.
-                        </span>
-                      </span>
-                      <span
+                      v-for="(discipline, index) in teacher.disciplines" :key="index"
                       class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
                     >
                       <span
                         aria-hidden
                         class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
                       ></span>
-                      <span class="relative">Обеспечение качества функционирования компьютерных систем</span>
+                      <span class="relative">{{discipline.name}}</span>
                     </span>
                     </td>
                     <td
