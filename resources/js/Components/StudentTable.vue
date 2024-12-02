@@ -1,5 +1,29 @@
 <script setup>
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+const students = ref(null);
+const error = ref(null);
 
+const { group } = defineProps({
+  group: {
+    type: Object,
+    required: true,
+  },
+});
+
+const getStudent = async () => {
+  try {
+    const response = await axios.get(`/api/groups/${group.id}`);
+    students.value = response.data.students;
+    console.log(students.value);
+  } catch (error) {
+    console.error('Ошибка при получении данных:', error);
+  }
+};
+
+onMounted(() => {
+  getStudent();
+});
 </script>
 
 <template>
@@ -18,22 +42,22 @@
                 <th
                   class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                 >
-                  ФИО
+                  Студент
                 </th>
                 <th
                   class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                 >
-                  Amount
+                  Фамилия
                 </th>
                 <th
                   class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                 >
-                  Issued / Due
+                  Имя
                 </th>
                 <th
                   class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                 >
-                  Предметы
+                  Отчество
                 </th>
                 <th
                   class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100"
@@ -43,7 +67,7 @@
             <tbody>
 
 
-              <tr>
+              <tr v-for="(student, index) in students" :key="index" >
                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <div class="flex">
                     <div class="flex-shrink-0 w-10 h-10">
@@ -54,45 +78,24 @@
                       />
                     </div>
                     <div class="ml-3">
-                      <p class="text-gray-900 whitespace-no-wrap">
-                        Molly Sanders
-                      </p>
-                      <p class="text-gray-600 whitespace-no-wrap">000004</p>
                     </div>
                   </div>
                 </td>
                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p class="text-gray-900 whitespace-no-wrap">$20,000</p>
-                  <p class="text-gray-600 whitespace-no-wrap">USD</p>
+                  <p class="text-gray-900 whitespace-no-wrap">{{student.lname }}</p>
                 </td>
                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p class="text-gray-900 whitespace-no-wrap">Sept 28, 2019</p>
-                  <p class="text-gray-600 whitespace-no-wrap">Due in 3 days</p>
+                  <p class="text-gray-900 whitespace-no-wrap">{{student.fname }}</p>
                 </td>
                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <span
-                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
-                  >
-                    <span
-                      aria-hidden
-                      class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-                    ></span>
-                    <span class="relative">Технология разработки и защиты баз данных.
-                    </span>
-                  </span>
-                  <span
-                  class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
-                >
-                  <span
-                    aria-hidden
-                    class="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-                  ></span>
-                  <span class="relative">Обеспечение качества функционирования компьютерных систем</span>
-                </span>
+                  <p class="text-gray-900 whitespace-no-wrap">{{student.mname }}</p>
                 </td>
                 <td
                   class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right"
                 >
+
+
+                
                   <button
                     type="button"
                     class="inline-block text-gray-500 hover:text-gray-700"
@@ -106,6 +109,9 @@
                       />
                     </svg>
                   </button>
+
+
+
                 </td>
               </tr>
 
