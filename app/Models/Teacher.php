@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Teacher extends Model
 {
-    protected $fillable = ['fname', 'lname', 'mname'];
+    protected $fillable = [
+        'fname',
+        'lname',
+        
+        'mname'
+    ];
     public function disciplines()
     {
         return $this->belongsToMany(Discipline::class, 'teacher_discipline');

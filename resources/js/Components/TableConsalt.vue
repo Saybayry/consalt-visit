@@ -1,4 +1,21 @@
 <script setup>
+defineProps({
+    consultations: {
+    type: Array,
+    required: true,
+  },
+});
+
+const Class_times = [
+  "08:00",
+  "09:40",
+  "11:20",
+  "13:20",
+  "15:00",
+  "16:40",
+  "18:20",
+  "20:00"
+];
 
 </script>
 
@@ -7,62 +24,74 @@
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
-                    Product name
+                    Преподаватель
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Color
+                    Предмет
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Category
+                    Дата
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Price
+                    Время
                 </th>
+                <th scope="col" class="px-6 py-3">
+                    Группы
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    
+                </th>
+                
+                
             </tr>
         </thead>
         <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr 
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+            v-for="(consultation, index) in consultations" :key="index"
+            >
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Apple MacBook Pro 17"
+                    {{ " " + consultation.teacher.fname + " "+
+                         consultation.teacher.mname + " "+
+                          consultation.teacher.lname }}
                 </th>
                 <td class="px-6 py-4">
-                    Silver
+                    {{ consultation.discipline.name }}
                 </td>
                 <td class="px-6 py-4">
-                    Laptop
+                    {{consultation.class_date}}
                 </td>
                 <td class="px-6 py-4">
-                    $2999
+                    {{ Class_times[consultation.class_number-1] }}
+                </td>
+                <td>
+                    <span
+                    v-for="(group, index) in consultation.groups" :key="index"
+                    class="mx-1 my-1 relative inline-block px-3 py-1 font-semibold text-blue-900 leading-tight"
+                    >
+                      <span
+                        aria-hidden
+                        class="absolute inset-0 bg-blue-200 opacity-50 rounded-full"
+                      >
+                      </span>
+                      <span class="relative">
+                        {{group.name}}
+                    </span>
+                  </span>
+                </td>
+                <td class="px-6 py-4">
+                    <button
+                      type="button"
+                      class="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                    >
+                    Подробнее
+                    </button>
+  
+  
+
                 </td>
             </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Microsoft Surface Pro
-                </th>
-                <td class="px-6 py-4">
-                    White
-                </td>
-                <td class="px-6 py-4">
-                    Laptop PC
-                </td>
-                <td class="px-6 py-4">
-                    $1999
-                </td>
-            </tr>
-            <tr class="bg-white dark:bg-gray-800">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Magic Mouse 2
-                </th>
-                <td class="px-6 py-4">
-                    Black
-                </td>
-                <td class="px-6 py-4">
-                    Accessories
-                </td>
-                <td class="px-6 py-4">
-                    $99
-                </td>
-            </tr>
+           
         </tbody>
     </table>
 </template>

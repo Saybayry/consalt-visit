@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             DisciplineSeeder::class,
             TeacherSeeder::class,
             DisciplineTeacherSeeder::class,
+            ConsultationsSeeder::class,
+            AddGroupsToConsultationsSeeder::class,
         ]);
     }
 }

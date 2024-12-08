@@ -23,8 +23,8 @@ class TeacherFactory extends Factory
 
         return [
             'fname' =>  $nameParts[0], // Генерирует имя
-            'lname' =>  $nameParts[2],   // Генерирует фамилию
-            'mname' =>  $nameParts[1], // Генерирует отчество (доступно в локали ru_RU)
+            'lname' =>  $nameParts[1],   // Генерирует фамилию
+            'mname' =>  $nameParts[2], // Генерирует отчество (доступно в локали ru_RU)
         ];
     }
 }

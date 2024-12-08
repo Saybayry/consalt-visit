@@ -4,6 +4,8 @@ import { onMounted, ref } from 'vue';
 const students = ref(null);
 const error = ref(null);
 
+
+
 const { group } = defineProps({
   group: {
     type: Object,
@@ -20,6 +22,10 @@ const getStudent = async () => {
     console.error('Ошибка при получении данных:', error);
   }
 };
+const account = ref({
+  address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY', // Пример адреса Polkadot
+  publicKey: 'your-public-key',
+});
 
 onMounted(() => {
   getStudent();
@@ -71,11 +77,13 @@ onMounted(() => {
                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <div class="flex">
                     <div class="flex-shrink-0 w-10 h-10">
+
                       <img
                         class="w-full h-full rounded-full"
-                        src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                        src="https://static.tildacdn.com/tild6563-6633-4239-a535-313432396266/student.png"
                         alt=""
                       />
+                      
                     </div>
                     <div class="ml-3">
                     </div>
