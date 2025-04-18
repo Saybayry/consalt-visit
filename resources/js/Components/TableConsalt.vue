@@ -60,7 +60,7 @@ const selectTeacher = (teacherId) => {
     // Заменяем весь объект преподавателя
     // selectedConsultation.value.teacher = selectedTeacher;
     Object.assign(selectedConsultation.value.teacher, selectedTeacher);
-
+    editedConsultation.value.teacher_id = selectedTeacher.id;
     // Очищаем дисциплину в случае изменения преподавателя
     editedConsultation.value.discipline_id = null;
 
@@ -103,7 +103,7 @@ const openCreateModal = async () =>  {
     class_number: 1, // лучше сразу число от 1 до 8
     discipline_id: null,
     group_ids: [], // если ты используешь выбор групп
-    teacher_id:0,
+    teacher_id:selectedConsultation.value.teacher.id,
   };
   }
   else if (page.props.auth.user.is_teacher) {
@@ -116,6 +116,7 @@ const openCreateModal = async () =>  {
       disciplines: page.props.auth.user.teacher.disciplines,
     },
     groups: [],
+
     };
       // Подготовка новой "пустой" консультации
   editedConsultation.value = {
@@ -262,12 +263,28 @@ const Class_times = [
               <span class="relative">{{ group.name }}</span>
             </span>
           </td>
-          <td class="px-6 py-4">
+          <td v-if="page.props.auth.user.is_admin||page.props.auth.user.is_teacher" class="px-6 py-4">
             <button
               @click="openModal(consultation)"
               class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
               Подробнее
+            </button>
+          </td>
+          <td v-if="page.props.auth.user.is_admin" class="px-6 py-4">
+            <button
+              @click="openModal(consultation)"
+              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              Записатся
+            </button>
+          </td>
+          <td v-if="page.props.auth.user.is_admin" class="px-6 py-4">
+            <button
+              @click="openModal(consultation)"
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+            >
+              отписатся
             </button>
           </td>
         </tr>
