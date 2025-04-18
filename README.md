@@ -18,7 +18,7 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 ## Technologies
 
 [![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen?logo=vue.js&logoColor=white)](https://vuejs.org/)
-[![Laravel](https://img.shields.io/badge/Laravel-10.x-red?logo=laravel&logoColor=white)](https://laravel.com/)
+[![Laravel](https://img.shields.io/badge/Laravel-11.x-red?logo=laravel&logoColor=white)](https://laravel.com/)
 
 .
 
