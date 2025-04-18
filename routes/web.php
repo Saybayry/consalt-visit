@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function () {
 // консультации
 Route::post('/api/consultations', [ConsultationController::class, 'store'])->middleware(['auth'])->name('api.consultations');; // Получить все группы
 
-Route::get('/api/consultations', [ConsultationController::class, 'index'])->middleware(['auth','teacher'])->name('api.consultations');; // Получить все группы
+Route::get('/api/consultations', [ConsultationController::class, 'index'])->middleware(['auth'])->name('api.consultations');; // Получить все группы
 Route::get('/api/consultations/{id}', [ConsultationController::class, 'show'])->middleware(['auth'])->name('api.consultations.show');; // Получить группу по ID
 Route::put('/api/consultations/{id}', [ConsultationController::class, 'update'])->middleware(['auth'])->name('api.consultations.update');; // Обновить группу
 Route::delete('/api/consultations/{id}', [ConsultationController::class, 'destroy'])->middleware(['auth'])->name('api.consultations.destroy');

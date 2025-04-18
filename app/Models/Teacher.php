@@ -17,6 +17,11 @@ class Teacher extends Model
     {
         return $this->belongsToMany(Discipline::class, 'teacher_discipline');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     /** @use HasFactory<\Database\Factories\TeacherFactory> */
     use HasFactory;
 }

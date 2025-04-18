@@ -28,6 +28,15 @@ const testConsole = () => {
   console.log("Это тест для проверки работы console.log");
 };
 
+
+// запись студента и отписка от консультации
+const Enroll = (consultation) =>{
+
+}
+const Unenroll = (consultation) =>{
+
+}
+
 const openModal = (consultation) => {
   selectedConsultation.value = consultation;
 
@@ -271,21 +280,19 @@ const Class_times = [
               Подробнее
             </button>
           </td>
-          <td v-if="page.props.auth.user.is_admin" class="px-6 py-4">
+          <td v-if="!page.props.auth.user.is_admin && !page.props.auth.user.is_teacher" class="px-6 py-4">
             <button
-              @click="openModal(consultation)"
+              @click="Enroll(consultation)"
               class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
               Записатся
             </button>
-          </td>
-          <td v-if="page.props.auth.user.is_admin" class="px-6 py-4">
             <button
-              @click="openModal(consultation)"
-              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-            >
-              отписатся
-            </button>
+            @click="Unenroll(consultation)"
+            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+          >
+            отписатся
+          </button>
           </td>
         </tr>
       </tbody>

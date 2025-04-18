@@ -20,7 +20,7 @@ class GroupController extends Controller
     public function show($id)
     {
         // Загрузить группу с её студентами
-        $group = Group::with('students')->find($id);
+        $group = Group::with('students.user')->find($id);
 
         if ($group) {
             return response()->json($group);

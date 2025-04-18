@@ -22,11 +22,12 @@ defineProps({
               <table class="min-w-full leading-normal">
                 <thead>
                   <tr>
-                    <th
+                    <!-- без фоток пока что -->
+                    <!-- <th
                       class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                     >
                       Преподаватель
-                    </th>
+                    </th> -->
                     <th
                       class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                     >
@@ -45,6 +46,11 @@ defineProps({
                     <th
                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                   >
+                    email
+                  </th>
+                    <th
+                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                  >
                     Предметы
                   </th>
                   <th
@@ -59,7 +65,7 @@ defineProps({
 
 
                   <tr v-for="(teacher, index) in teachers" :key="index" >
-                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <!-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <div class="flex">
                         <div class="flex-shrink-0 w-10 h-10">
                           <img
@@ -74,7 +80,7 @@ defineProps({
                           </p>
                         </div>
                       </div>
-                    </td>
+                    </td> -->
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <p class="text-gray-900 whitespace-no-wrap">{{ teacher.lname }}</p>
                     </td>
@@ -84,6 +90,10 @@ defineProps({
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <p class="text-gray-900 whitespace-no-wrap">{{ teacher.mname }}</p>
+
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p class="text-gray-900 whitespace-no-wrap">{{ teacher.user.email }}</p>
 
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">

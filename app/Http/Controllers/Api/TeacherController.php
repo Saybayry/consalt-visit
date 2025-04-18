@@ -10,7 +10,8 @@ class TeacherController extends Controller
 {
     public function index()
     {
-        $teachers = Teacher::with('disciplines')->get();// Получаем все группы
+        $teachers = Teacher::with(['disciplines', 'user'])->get();
+        // Получаем все группы
         return response()->json($teachers);
     }
 
