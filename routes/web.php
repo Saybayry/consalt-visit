@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ConsultationController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\TeacherController;
+use App\Http\Controllers\Api\ConsultationRegistrationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +63,24 @@ Route::get('/api/consultations', [ConsultationController::class, 'index'])->midd
 Route::get('/api/consultations/{id}', [ConsultationController::class, 'show'])->middleware(['auth'])->name('api.consultations.show');; // Получить группу по ID
 Route::put('/api/consultations/{id}', [ConsultationController::class, 'update'])->middleware(['auth'])->name('api.consultations.update');; // Обновить группу
 Route::delete('/api/consultations/{id}', [ConsultationController::class, 'destroy'])->middleware(['auth'])->name('api.consultations.destroy');
+
+
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::post('/api/consultation_registrations', [ConsultationController::class, 'store'])->name('api.consultation_registrations'); // Создать новую записть на конс
+//     Route::get('/api/consultation_registrations', [ConsultationController::class, 'index'])->name('api.consultation_registrations.index');
+//     Route::get('/api/consultation_registrations/{id}', [ConsultationController::class, 'show'])->name('api.consultation_registrations.show');
+//     Route::put('/api/consultation_registrations/{id}', [ConsultationController::class, 'update'])->name('api.consultation_registrations.update');
+//     Route::delete('/api/consultation_registrations/{id}', [ConsultationController::class, 'destroy'])->name('api.consultation_registrations.destroy');
+    
+// });
+
+// Консультации
+Route::post('/api/visiting', [ConsultationRegistrationController::class, 'store'])->middleware([])->name('api.visiting');; // Создать новую группу
+Route::get('/api/visiting', [ConsultationRegistrationController::class, 'index'])->middleware(['auth'])->name('api.visiting.index');
+Route::get('/api/visiting/{id}', [ConsultationRegistrationController::class, 'show'])->middleware(['auth'])->name('api.visiting.show');
+Route::put('/api/visiting/{id}', [ConsultationRegistrationController::class, 'update'])->middleware(['auth'])->name('api.visiting.update');
+Route::delete('/api/visiting/{id}', [ConsultationRegistrationController::class, 'destroy'])->middleware(['auth'])->name('api.visiting.destroy');
 
 
 

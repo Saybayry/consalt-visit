@@ -30,11 +30,126 @@ const testConsole = () => {
 
 
 // запись студента и отписка от консультации
-const Enroll = (consultation) =>{
+const Enroll12 = async (consultation) => {
+    try {
 
-}
-const Unenroll = (consultation) =>{
+        const response = await fetch('/api/visiting', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`, // если используешь токен
+            },
+            body: JSON.stringify({
+                consultation_id: consultation.id,
+                is_present: false // или true, если нужно сразу отметить присутствие
+            })
+        });
 
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Ошибка при записи:', errorData);
+            return;
+        }
+
+        const data = await response.json();
+        console.log('Успешная запись на консультацию:', data);
+    } catch (error) {
+        console.error('Ошибка при выполнении запроса:', error);
+    }
+};
+
+const Enroll2 = async (consultation) => {
+    try {
+        // Получаем токен
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+            console.error('Нет токена авторизации');
+            return;
+        }
+
+        const response = await fetch('/api/visiting', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Если токен есть
+            },
+            body: JSON.stringify({
+                consultation_id: consultation.id,
+                is_present: false, // или true, если нужно сразу отметить присутствие
+            })
+        });
+
+        // Проверка ответа
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Ошибка при записи:', errorData); // Можно вывести больше информации о том, что произошло
+            return;
+        }
+
+        // Получение данных из ответа
+        const data = await response.json();
+        console.log('Успешная запись на консультацию:', data);
+    } catch (error) {
+        console.error('Ошибка при выполнении запроса:', error);
+    }
+};
+
+
+// try {
+//     await axios.put(`/api/consultations/${selectedConsultation.value.id}`, {
+//       consultation_id: editedConsultation.value.class_date,
+//       class_number: editedConsultation.value.class_number,
+//       discipline_id: editedConsultation.value.discipline_id,
+//       group_ids: editedConsultation.value.group_ids, 
+//     });
+
+//     await props.refresh(); // обновление таблицы
+//     console.log('refresh called');
+
+//     closeModal(); // закрытие модального окна
+//   } catch (error) {
+//     console.error('Ошибка при обновлении консультации:', error);
+//   }
+
+
+
+const Enroll = async (consultation) => {
+  try {
+      await axios.post(`/api/visiting`, {
+        consultation_id: consultation.id,
+        is_present: false,
+      });
+
+      await props.refresh(); // обновление таблицы
+      console.log('refresh called');
+
+    } catch (error) {
+      console.error('Ошибка при обновлении консультации:', error);
+    }
+};
+
+
+
+
+
+
+
+
+
+const Unenroll = async (consultation) =>{
+  try {
+      await axios.delete(`/api/visiting/${consultation.registration.id}`, {
+        consultation_id: consultation.id,
+        is_present: false,
+      });
+
+      await props.refresh(); // обновление таблицы
+      console.log('refresh called');
+
+    } catch (error) {
+      console.error('Ошибка при обновлении консультации:', error);
+    }
 }
 
 const openModal = (consultation) => {
@@ -263,6 +378,7 @@ const Class_times = [
           <td class="px-6 py-4">{{ consultation.class_date }}</td>
           <td class="px-6 py-4">{{ Class_times[consultation.class_number - 1] }}</td>
           <td class="px-6 py-4">
+            <!-- {{ consultation }} -->
             <span
               v-for="(group, i) in consultation.groups"
               :key="i"
@@ -281,13 +397,13 @@ const Class_times = [
             </button>
           </td>
           <td v-if="!page.props.auth.user.is_admin && !page.props.auth.user.is_teacher" class="px-6 py-4">
-            <button
+            <button v-if="!consultation.registration"
               @click="Enroll(consultation)"
               class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
               Записатся
             </button>
-            <button
+            <button v-if="consultation.registration"
             @click="Unenroll(consultation)"
             class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
           >

@@ -7,13 +7,34 @@ use Illuminate\Http\Request;
 
 class ConsultationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user();
+        if ($user->is_admin || $user->is_teacher) {
         $consultations = Consultation::with('teacher.disciplines', 'discipline', 'groups')
             ->orderBy('class_date')
             ->orderBy('class_number')
             ->get();
+        }else{
+            $student = $user->student;
+            if (!$student) {
+                return response()->json(['error' => 'Студент не найден для пользователя.'], 403);
+            }
+            $consultations = Consultation::with('teacher.disciplines', 'discipline', 'groups')
+            ->orderBy('class_date')
+            ->orderBy('class_number')
+            ->get();
 
+            // Добавляем к каждой консультации запись студента (если есть)
+            $consultations = $consultations->map(function ($consultation) use ($student) {
+                $consultation->registration = $consultation
+                    ->registrationForStudent($student->id)
+                    ->first();
+
+            return $consultation;
+        });
+
+        }
         return response()->json($consultations);
     }
 

@@ -13,6 +13,12 @@ class Consultation extends Model
         'class_date',
         'class_number',
     ];
+
+    public function registrationForStudent($studentId)
+    {
+        return $this->hasOne(ConsultationRegistration::class)
+            ->where('student_id', $studentId);
+    }
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
