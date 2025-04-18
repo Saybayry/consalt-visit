@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -10,30 +9,108 @@ class ConsultationController extends Controller
 {
     public function index()
     {
-        $consultations = Consultation::with('teacher', 'discipline',"groups")
-        ->orderBy('class_date')  
-        ->orderBy('class_number') 
-        ->get();
+        $consultations = Consultation::with('teacher.disciplines', 'discipline', 'groups')
+            ->orderBy('class_date')
+            ->orderBy('class_number')
+            ->get();
 
         return response()->json($consultations);
     }
 
     public function show($id)
     {
-            // Загрузить группу с её студентами
-        // Загрузить консультацию с её преподавателем, студентами и их посещениями
         $consultation = Consultation::with([
-            'teacher',
+            'teacher.disciplines',  // Загрузка дисциплин учителя
             'groups',
             'students' => function ($query) {
                 $query->withPivot('is_present'); // Подгрузить поле is_present из таблицы visiting
             }
         ])->find($id);
-    
+
         if ($consultation) {
             return response()->json($consultation);
         }
 
         return response()->json(['message' => 'Consultation not found'], 404);
     }
+        public function update(Request $request, $id)
+    {
+        $consultation = Consultation::find($id);
+
+        if (!$consultation) {
+            return response()->json(['message' => 'Consultation not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'class_date' => 'required|date',
+            'class_number' => 'required|integer',
+            'discipline_id' => 'required|exists:disciplines,id',
+            'group_ids' => 'array',
+            'group_ids.*' => 'exists:groups,id',
+        ]);
+
+        $consultation->update([
+            'class_date' => $validated['class_date'],
+            'class_number' => $validated['class_number'],
+            'discipline_id' => $validated['discipline_id'],
+        ]);
+
+        if (isset($validated['group_ids'])) {
+            $consultation->groups()->sync($validated['group_ids']);
+        }
+
+        return response()->json(['message' => 'Consultation updated successfully']);
+    }
+    public function destroy($id)
+    {
+        $consultation = Consultation::find($id);
+    
+        if (!$consultation) {
+            return response()->json(['message' => 'Consultation not found'], 404);
+        }
+    
+        // Отвязываем связанные группы (pivot таблица)
+        $consultation->groups()->detach();
+    
+        // Можно также удалить посещения, если есть связь
+        $consultation->students()->detach();
+    
+        // Удаляем саму консультацию
+        $consultation->delete();
+    
+        return response()->json(['message' => 'Consultation deleted successfully']);
+    }
+    
+
+    public function store (Request $request)
+    {
+        // Валидация данных, переданных в запросе
+        $validated = $request->validate([
+            'teacher_id' => 'required|exists:teachers,id',
+            'discipline_id' => 'required|exists:disciplines,id',
+            'class_date' => 'required|date',
+            'class_number' => 'required|integer',
+            'group_ids' => 'array',
+            'group_ids.*' => 'exists:groups,id',
+        ]);
+    
+        // // Создание новой консультации
+        $consultation = Consultation::create([
+            'teacher_id' => $validated['teacher_id'],
+            'discipline_id' => $validated['discipline_id'],
+            'class_date' => $validated['class_date'],
+            'class_number' => $validated['class_number'],
+        ]);
+ 
+        // Если есть группы, привязываем их
+        if (isset($validated['group_ids'])) {
+            $consultation->groups()->sync($validated['group_ids']);
+        }
+    
+        // Возвращаем успешный ответ
+        return response()->json(['message' => 'Consultation created successfully', 'consultation' => $consultation], 201);
+    }
+    
+    
+
 }

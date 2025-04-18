@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Student;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 
 class StudentSeeder extends Seeder
 {
@@ -13,7 +14,14 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
-        Student::factory()->count(500)->create(); 
+        // Создаем пользователей для студентов
+        $studentUsers = User::factory(100)->create();
+
+        foreach ($studentUsers as $user) {
+            Student::factory()->create([
+                'user_id' => $user->id,
+            ]);
+        }
 
     }
 }

@@ -18,4 +18,7 @@
     <body class="font-sans antialiased">
         @inertia
     </body>
+    <script>
+        window.authUser = @json(auth()->user());
+    </script>
 </html>

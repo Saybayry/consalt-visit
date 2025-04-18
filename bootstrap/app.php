@@ -15,7 +15,13 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
-
+      // Регистрируем middleware с алиасом 'teacher'
+      $middleware->alias([
+        'teacher' => \App\Http\Middleware\CheckIfTeacher::class,
+        'admin' => \App\Http\Middleware\CheckIfAdmin::class,
+        
+        
+    ]);
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {

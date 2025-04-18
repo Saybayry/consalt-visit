@@ -5,12 +5,12 @@ defineProps({
     type: Array,
     required: true,
   },
+  auth: Object,
 });
 </script>
 
 <template>
     <div class="container mx-auto px-4 sm:px-8">
-
         <div class="py-8">
           <div>
             <h2 class="text-2xl font-semibold leading-tight">Invoices</h2>

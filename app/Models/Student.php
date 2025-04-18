@@ -11,7 +11,8 @@ class Student extends Model
         'fname', 
         'lname', 
         'mname', 
-        'group_id'
+        'group_id',
+        'user_id'
     ];
 
     public function group()
@@ -24,6 +25,13 @@ class Student extends Model
                     ->withPivot('is_present') // Поле для отметки присутствия
                     ->withTimestamps();
     }
-        /** @use HasFactory<\Database\Factories\StudentFactory> */
+
+    // Связь с моделью User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /** @use HasFactory<\Database\Factories\StudentFactory> */
     use HasFactory;
 }

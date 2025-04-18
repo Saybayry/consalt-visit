@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('mname');
             $table->string('lname')->nullable();
             $table->foreignId('group_id')->nullable()->constrained('groups')->onDelete('cascade');
+            
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();        
         });
     }

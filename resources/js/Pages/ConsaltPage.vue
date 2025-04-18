@@ -61,21 +61,7 @@ consultationId: {
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Предмет
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Дата
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Время
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Группы
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        
-                                    </th>
-                                    
-                                    
+                                    </th>           
                                 </tr>
                             </thead>
                             <tbody>

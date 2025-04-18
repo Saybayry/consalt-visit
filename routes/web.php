@@ -55,21 +55,30 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/api/consultations', [ConsultationController::class, 'index'])->middleware(['auth'])->name('api.consultations');; // Получить все группы
+// консультации
+Route::post('/api/consultations', [ConsultationController::class, 'store'])->middleware(['auth'])->name('api.consultations');; // Получить все группы
+
+Route::get('/api/consultations', [ConsultationController::class, 'index'])->middleware(['auth','teacher'])->name('api.consultations');; // Получить все группы
 Route::get('/api/consultations/{id}', [ConsultationController::class, 'show'])->middleware(['auth'])->name('api.consultations.show');; // Получить группу по ID
+Route::put('/api/consultations/{id}', [ConsultationController::class, 'update'])->middleware(['auth'])->name('api.consultations.update');; // Обновить группу
+Route::delete('/api/consultations/{id}', [ConsultationController::class, 'destroy'])->middleware(['auth'])->name('api.consultations.destroy');
 
 
-Route::get('/api/groups', [GroupController::class, 'index'])->middleware(['auth'])->name('api.disciplines');; // Получить все группы
+
+// группы
+Route::get('/api/groups', [GroupController::class, 'index'])->middleware(middleware: ['auth'])->name('api.disciplines');; // Получить все группы
 Route::get('/api/groups/{id}', [GroupController::class, 'show'])->middleware(['auth'])->name('api.disciplines');; // Получить группу по ID
-Route::post('/api/groups', [GroupController::class, 'store'])->middleware(['auth'])->name('api.disciplines');; // Создать новую группу
-Route::put('/api/groups/{id}', [GroupController::class, 'update'])->middleware(['auth'])->name('api.disciplines');; // Обновить группу
-Route::delete('/api/groups/{id}', [GroupController::class, 'destroy'])->middleware(['auth'])->name('api.disciplines'); // Удалить группу
 
+Route::post('/api/groups', [GroupController::class, 'store'])->middleware(['auth','admin'])->name('api.disciplines');; // Создать новую группу
+Route::put('/api/groups/{id}', [GroupController::class, 'update'])->middleware(['auth','admin'])->name('api.disciplines');; // Обновить группу
+Route::delete('/api/groups/{id}', [GroupController::class, 'destroy'])->middleware(['auth','admin'])->name('api.disciplines'); // Удалить группу
+// учителя
 Route::get('/api/teachers', [TeacherController::class, 'index'])->middleware(['auth'])->name('api.teachers');; // Получить все группы
 Route::get('/api/teachers/{id}', [TeacherController::class, 'show'])->middleware(['auth'])->name('api.teachers');; // Получить группу по ID
-Route::post('/api/teachers', [TeacherController::class, 'store'])->middleware(['auth'])->name('api.teachers');; // Создать новую группу
-Route::put('/api/teachers/{id}', [TeacherController::class, 'update'])->middleware(['auth'])->name('api.teachers');; // Обновить группу
-Route::delete('/api/teachers/{id}', [TeacherController::class, 'destroy'])->middleware(['auth'])->name('api.teachers'); // Удалить группу
+
+Route::post('/api/teachers', [TeacherController::class, 'store'])->middleware(['auth','admin'])->name('api.teachers');; // Создать новую группу
+Route::put('/api/teachers/{id}', [TeacherController::class, 'update'])->middleware(['auth','admin'])->name('api.teachers');; // Обновить группу
+Route::delete('/api/teachers/{id}', [TeacherController::class, 'destroy'])->middleware(['auth','admin'])->name('api.teachers'); // Удалить группу
 
 
 require __DIR__.'/auth.php';
