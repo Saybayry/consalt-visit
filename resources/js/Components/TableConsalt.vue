@@ -51,12 +51,15 @@ const loadTeachers = async () => {
   }
 };
 
+
 const selectTeacher = (teacherId) => {
-  console.log("dsd")
+
   const selectedTeacher = teacherList.value.find(teacher => teacher.id === teacherId);
   if (selectedTeacher) {
+
     // Заменяем весь объект преподавателя
-    selectedConsultation.value.teacher = selectedTeacher;
+    // selectedConsultation.value.teacher = selectedTeacher;
+    Object.assign(selectedConsultation.value.teacher, selectedTeacher);
 
     // Очищаем дисциплину в случае изменения преподавателя
     editedConsultation.value.discipline_id = null;
@@ -292,7 +295,7 @@ const Class_times = [
             <select v-model="selectedConsultation.teacher.id" @change="selectTeacher(selectedConsultation.teacher.id)"
              class="mt-1 w-full border rounded px-3 py-2 dark:bg-gray-800 dark:text-white">
               <option v-for="teacher in teacherList" :key="teacher.id" :value="teacher.id">
-                {{ teacher.fname }} {{ teacher.mname }} {{ teacher.lname }} {{ teacher.discipline }}
+                {{ teacher.fname }} {{ teacher.mname }} {{ teacher.lname }} 
               </option>
             </select>
           </div>
@@ -301,7 +304,7 @@ const Class_times = [
           <!-- -------------------------------- -->
           <div>
             <label class="text-gray-800 dark:text-gray-300"><strong>Предмет:</strong></label><br />
-            {{ selectedConsultation.teacher }}
+     
             <select
               v-model="editedConsultation.discipline_id"
               :disabled="!isEditing"
