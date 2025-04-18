@@ -15,9 +15,12 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 
 - It's still empty
 
-## Security Vulnerabilities
+## Technologies
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+[![Vue.js](https://img.shields.io/badge/Vue.js-3.x-brightgreen?logo=vue.js&logoColor=white)](https://vuejs.org/)
+[![Laravel](https://img.shields.io/badge/Laravel-10.x-red?logo=laravel&logoColor=white)](https://laravel.com/)
+
+.
 
 ## License
 
