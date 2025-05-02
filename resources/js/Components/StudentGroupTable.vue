@@ -3,20 +3,6 @@ import { ref } from 'vue';
 import StudentTable from '@/Components/StudentTable.vue';
 // Управление состоянием
 const activeIndex = ref(null); // Индекс активного элемента
-const items = ref([
-  {
-    title: '205s11-5',
-    content: 'Details for Invoice 1: Amount $20,000, Issued on Sept 28, 2019, Due in 3 days.',
-  },
-  {
-    title: '205s11-4',
-    content: 'Details for Invoice 2: Amount $214,000, Issued on Sept 25, 2019, Due in 6 days.',
-  },
-  {
-    title: '205s11-3',
-    content: 'Details for Invoice 3: Amount $10,000, Issued on Oct 5, 2019, Due in 2 weeks.',
-  },
-]);
 
 // Метод для переключения
 const toggleItem = (index) => {

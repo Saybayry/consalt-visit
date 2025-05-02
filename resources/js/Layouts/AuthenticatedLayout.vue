@@ -37,7 +37,7 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
-                                    Dashboard
+                                    Мои консультации
                                 </NavLink>
                             </div>
                             <div
@@ -185,10 +185,33 @@ const showingNavigationDropdown = ref(false);
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
                         >
-                            Dashboard
+                            Мои консультации
                         </ResponsiveNavLink>
                     </div>
-
+                    <div class="space-y-1 pb-3 pt-2">
+                        <ResponsiveNavLink
+                            :href="route('consalt')"
+                            :active="route().current('consalt')"
+                        >
+                            Консультации
+                        </ResponsiveNavLink>
+                    </div>
+                    <div class="space-y-1 pb-3 pt-2">
+                        <ResponsiveNavLink
+                            :href="route('teacher')"
+                            :active="route().current('teacher')"
+                        >
+                            Учителя
+                        </ResponsiveNavLink>
+                    </div>
+                    <div class="space-y-1 pb-3 pt-2">
+                        <ResponsiveNavLink
+                            :href="route('student-groups')"
+                            :active="route().current('student-groups')"
+                        >
+                            Группы
+                        </ResponsiveNavLink>
+                    </div>
                     <!-- Responsive Settings Options -->
                     <div
                         class="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600"

@@ -131,7 +131,21 @@ class ConsultationController extends Controller
         // Возвращаем успешный ответ
         return response()->json(['message' => 'Consultation created successfully', 'consultation' => $consultation], 201);
     }
-    
+    public function showWithRegistrations()
+    {
+        $consultation = Consultation::with([
+            'teacher.disciplines',
+            'discipline',
+            'groups',
+            'registrations.student.group',
+        ])->get();
+
+        if (!$consultation) {
+            return response()->json(['message' => 'Consultation not found'], 404);
+        }
+
+        return response()->json($consultation);
+    }
     
 
 }

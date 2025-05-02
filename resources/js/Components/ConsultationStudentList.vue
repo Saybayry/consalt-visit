@@ -6,8 +6,8 @@ const error = ref(null);
 
 
 
-const { group } = defineProps({
-  group: {
+const { consultation } = defineProps({
+  consultation: {
     type: Object,
     required: true,
   },
@@ -15,7 +15,7 @@ const { group } = defineProps({
 
 const getStudent = async () => {
   try {
-    const response = await axios.get(`/api/groups/${group.id}`);
+    const response = await axios.get(`/api/visiting/${consultation.id}`);
     students.value = response.data.students;
     console.log(students.value);
   } catch (error) {

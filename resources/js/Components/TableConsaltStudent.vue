@@ -336,12 +336,7 @@ const Class_times = [
 <template>
   <div>
   <div class="py-8">
-    <button
-    @click="openCreateModal()"
-    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-  >
-    Создать
-  </button>
+
 {{ page.props.auth.user }}
   </div>
 
@@ -369,16 +364,6 @@ const Class_times = [
           <td class="px-2 py-2 sm:px-6 sm:py-4">{{ consultation.discipline.name }}</td>
           <td class="px-2 py-2 sm:px-6 sm:py-4">{{ consultation.class_date }}</td>
           <td class="px-2 py-2 sm:px-6 sm:py-4">{{ Class_times[consultation.class_number - 1] }}</td>
-          <!-- <td class="px-6 py-4">
-            <span
-              v-for="(group, i) in consultation.groups"
-              :key="i"
-              class="mx-1 my-1 relative inline-block px-3 py-1 font-semibold text-blue-900 leading-tight"
-            >
-              <span class="absolute inset-0 bg-blue-200 opacity-50 rounded-full"></span>
-              <span class="relative">{{ group.name }}</span>
-            </span>
-          </td> -->
           <td v-if="page.props.auth.user.is_admin||page.props.auth.user.is_teacher" class="px-6 py-4">
             <button
               @click="openModal(consultation)"

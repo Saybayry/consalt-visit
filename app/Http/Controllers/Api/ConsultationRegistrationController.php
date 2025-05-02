@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ConsultationRegistration;
-
+use App\Models\Consultation;
 class ConsultationRegistrationController extends Controller
 {
     /**
@@ -54,13 +54,11 @@ class ConsultationRegistrationController extends Controller
 
     /**
      * Display the specified resource.
-     */
-    public function show($id)
+     */public function show($id)
     {
-        $registration = ConsultationRegistration::findOrFail($id);
+        $registration = ConsultationRegistration::with(['student.group'])->findOrFail($id);
         return response()->json($registration);
     }
-
     /**
      * Update the specified resource in storage.
      */
@@ -76,6 +74,14 @@ class ConsultationRegistrationController extends Controller
 
         return response()->json($registration);
     }
+    // showByConsalt
+    
+    public function showByConsalt($id)
+    {
+        $registration = Consultation::with(['registrations.student.group'])->findOrFail($id);
+        return response()->json($registration);
+    }
+
 
     /**
      * Remove the specified resource from storage.

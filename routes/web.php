@@ -57,6 +57,9 @@ Route::middleware('auth')->group(function () {
 });
 
 // консультации
+Route::get('/api/consultationswithregistration', [ConsultationController::class, 'showWithRegistrations'])->middleware(['auth'])->name('api.consultationswithregistration');; // Получить все группы
+
+
 Route::post('/api/consultations', [ConsultationController::class, 'store'])->middleware(['auth'])->name('api.consultations');; // Получить все группы
 
 Route::get('/api/consultations', [ConsultationController::class, 'index'])->middleware(['auth'])->name('api.consultations');; // Получить все группы
@@ -76,6 +79,8 @@ Route::delete('/api/consultations/{id}', [ConsultationController::class, 'destro
 // });
 
 // Консультации
+Route::get('/api/visitings/{id}', [ConsultationRegistrationController::class, 'showByConsalt'])->middleware(['auth'])->name('api.visiting.showByConsalt');
+
 Route::post('/api/visiting', [ConsultationRegistrationController::class, 'store'])->middleware([])->name('api.visiting');; // Создать новую группу
 Route::get('/api/visiting', [ConsultationRegistrationController::class, 'index'])->middleware(['auth'])->name('api.visiting.index');
 Route::get('/api/visiting/{id}', [ConsultationRegistrationController::class, 'show'])->middleware(['auth'])->name('api.visiting.show');

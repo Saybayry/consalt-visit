@@ -19,6 +19,10 @@ class Consultation extends Model
         return $this->hasOne(ConsultationRegistration::class)
             ->where('student_id', $studentId);
     }
+    public function registrations()
+    {
+        return $this->hasMany(\App\Models\ConsultationRegistration::class);
+    }
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
