@@ -1,7 +1,29 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import TableConsalt from '@/Components/TableConsalt.vue';
+import axios from 'axios';
+
+const getExel = async () => {
+  try {
+    const response = await axios.get('/api/export', {
+      responseType: 'blob', // очень важно для бинарных данных
+    });
+
+    // Создаем ссылку для скачивания файла
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'consultation_report.xlsx'); // имя скачиваемого файла
+    document.body.appendChild(link);
+    link.click();
+
+    // Очистка
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Ошибка при выгрузке отчета:', error);
+  }
+};
 
 </script>
 
@@ -13,7 +35,7 @@ import TableConsalt from '@/Components/TableConsalt.vue';
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
             >
-            Предметы
+            Отчет
             </h2>
         </template>
 
@@ -23,7 +45,12 @@ import TableConsalt from '@/Components/TableConsalt.vue';
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
                     <div class="p-6 text-gray-900 dark:text-gray-100">
-
+                        <button
+                        @click="getExel"
+                        class="bg-blue-300 hover:bg-blue-400 px-4 py-2 rounded"
+                      >
+                        Сформировать отчет
+                      </button>
                     </div>
                 </div>
             </div>

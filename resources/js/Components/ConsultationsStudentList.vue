@@ -28,11 +28,25 @@ const refreshData = () => {
 };
 
 
+const updateNote = async (visiting) => {
+  try {
+    await axios.put(`/api/visiting/${visiting.id}`, {
+      noute: visiting.noute,
+      is_present: visiting.is_present, // можно оставить текущее значение
+    });
+    console.log('Заметка обновлена');
+  } catch (error) {
+    console.error('Ошибка при обновлении заметки:', error);
+  }
+};
+
+
 const notice = async (visiting) => {
   try {
     // Отправляем только is_present, так как другие поля не требуются
     await axios.put(`/api/visiting/${visiting.id}`, {
       is_present: true, // или !visiting.is_present, если нужно переключать состояние
+      noute: visiting.noute,
     });
 
     await refreshData(); // Обновляем данные после успешного запроса
@@ -49,6 +63,7 @@ const Unnotice = async (visiting) => {
     // Отправляем только is_present, так как другие поля не требуются
     await axios.put(`/api/visiting/${visiting.id}`, {
       is_present: false, // или !visiting.is_present, если нужно переключать состояние
+      noute: visiting.noute,
     });
 
     await refreshData(); // Обновляем данные после успешного запроса
@@ -61,6 +76,9 @@ const Unnotice = async (visiting) => {
 };
 
 
+
+
+
 onMounted(() => {
   getStudent();
 });
@@ -68,9 +86,9 @@ onMounted(() => {
 
 <template>      
 
-  <div  class="container mx-auto px-4 sm:px-8">
-    <div class="py-8">
-      <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+  <div  class="container mx-auto px-4 sm:px-0">
+    <div class="lg:py-8 md:py-0">
+      <div class="-mx-0 sm:-mx-0 lg:px-4 sm:px-0 py-0 overflow-x-auto">
         <div
           class="inline-block min-w-full shadow-md rounded-lg overflow-hidden"
         >
@@ -78,27 +96,27 @@ onMounted(() => {
             <thead>
               <tr>
                 <th
-                  class="px-2 py-2 sm:px-5 sm:py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                  class="lg:px-2 py-2 sm:px-0 sm:py-0 border-b-2
+                   border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider
+                    dark:text-gray-400  dark:bg-gray-700 
+                   "
                 >
                   Фамилия
-                </th>
-                <th
-                  class="px-2 py-2 sm:px-5 sm:py-3  border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
                   Имя
-                </th>
-                <th
-                  class="px-2 py-2 sm:px-5 sm:py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
                   Отчество
                 </th>
+
                 <th
-                class="px-2 py-2 sm:px-5 sm:py-3  border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                class="px-2 py-2 sm:px-0 sm:py-3  border-b-2
+                 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider
+                  dark:text-gray-400  dark:bg-gray-700 "
               >
                 группа
               </th>
               <th
-              class="px-2 py-2 sm:px-5 sm:py-3  border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+              class="px-2 py-2 sm:px-0 sm:py-3  border-b-2
+               border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider
+                dark:text-gray-400  dark:bg-gray-700 "
             >
               посещение
             </th>
@@ -107,39 +125,82 @@ onMounted(() => {
             <tbody  v-if="consultations_with_registrations?.registrations">
 
 <!-- {{ consultations_with_registrations }} -->
-
-              <tr v-for="(consreg, index) in consultations_with_registrations.registrations" :key="index" >
+  <template v-for="(consreg, index) in consultations_with_registrations.registrations" :key="index">
+              <tr>
                 <!-- {{ consreg.student.lname}} -->
-                <td class="px-2 py-2 sm:px-5 sm:py-5 border-b border-gray-200 bg-white text-sm">
-                  <p class="text-gray-900 whitespace-no-wrap">{{consreg.student.lname }}</p>
-                </td>
-                <td class="px-2 py-2 sm:px-5 sm:py-5 border-b border-gray-200 bg-white text-sm">
-                  <p class="text-gray-900 whitespace-no-wrap">{{consreg.student.fname }}</p>
-                </td>
-                <td class="px-2 py-2 sm:px-5 sm:py-5 border-b border-gray-200 bg-white text-sm">
-                  <p 
-                    class="text-gray-900 whitespace-no-wrap">
-                    {{consreg.student.mname }}
+                <td 
+                class="lg:px-2 lg:py-2 sm:px-0 sm:py-0 border-b
+                 border-gray-200 bg-white text-sm
+                  dark:text-gray-400  dark:bg-gray-700 
+                  align-middle
+                 ">
+                  <p class="text-gray-900 whitespace-no-wrap dark:text-white">
+                    {{consreg.student.lname }}
+                  </br>
+                  {{consreg.student.fname }}
+                </br>
+                  {{consreg.student.mname }}
+                  </br>
+
                   </p>
                 </td>
-                <td class="ppx-2 py-2 sm:px-5 sm:py-5 border-b border-gray-200 bg-white text-sm">
-                  <p class="text-gray-900 whitespace-no-wrap">{{consreg.student.group.name }}</p>
+
+                <td class="lg:px-2 lg:py-2 sm:px-0 sm:py-5 border-b border-gray-200 bg-white text-sm 
+                
+                 dark:text-gray-400  dark:bg-gray-700 
+                 align-middle">
+                  <p class="text-gray-900 dark:text-white whitespace-no-wrap">{{consreg.student.group.name }}</p>
                 </td>
-                <td>
+                <td  
+                class="lg:px-2 lg:py-2 sm:px-0 sm:py-5 border-b border-gray-200 bg-white text-sm 
+                dark:text-gray-400  dark:bg-gray-700 
+                align-middle">
                   <button v-if="consreg.is_present"
                   @click="Unnotice(consreg)"
-                  class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                  class="w-full h-full text-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
                 >
                 пришел
                 </button>
                 <button v-if="!consreg.is_present"
                 @click="notice(consreg)"
-                class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                class="w-full h-full text-center bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
               >
               не пришел
               </button>
                 </td>
               </tr>
+              <tr class="border-b-4 border-gray-300">
+                  <td colspan="2" class="align-middle">
+                    <div class="space-y-2">
+                      <textarea
+                        v-model="consreg.noute"
+                        class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white dark:border-gray-600 px-2 py-1 text-sm"
+                        placeholder="Введите заметку..."
+                        rows="2"
+                        maxlength="300" 
+                      ></textarea>
+                    </div>
+                  </td>
+                <td  
+                class="lg:px-2 lg:py-2 sm:px-0 sm:py-5 border-b border-gray-200 bg-white text-sm 
+                dark:text-gray-400  dark:bg-gray-700 
+                align-middle">
+                  <button
+                    @click="updateNote(consreg)"
+                      class="w-full h-full text-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                    >
+                    cохранить
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="space-y-2 align-middle">
+
+                </td>
+              </tr>
+   </template>
+   
+
             </tbody>
           </table>
         </div>

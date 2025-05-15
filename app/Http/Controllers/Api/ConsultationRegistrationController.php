@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ConsultationRegistration;
 use App\Models\Consultation;
+
+use App\Exports\ConsultationRegistrationsExport;
+use Maatwebsite\Excel\Facades\Excel;
 class ConsultationRegistrationController extends Controller
 {
     /**
@@ -40,6 +43,7 @@ class ConsultationRegistrationController extends Controller
             $data = $request->validate([
                 'consultation_id' => 'required|exists:consultations,id',
                 'is_present' => 'boolean',
+                'noute' => 'nullable|string',
             ]);
     
             $data['student_id'] = $student->id;
@@ -68,6 +72,7 @@ class ConsultationRegistrationController extends Controller
 
         $data = $request->validate([
             'is_present' => 'boolean',
+            'noute' => 'nullable|string',
         ]);
 
         $registration->update($data);
@@ -101,5 +106,11 @@ class ConsultationRegistrationController extends Controller
     
         return response()->json(['error' => 'Доступ запрещен.'], 403);
     }
-    
+
+        public function exportExcel()
+    {
+        return Excel::download(new ConsultationRegistrationsExport, 'consultation_registrations.xlsx');
+    }
+
+
 }

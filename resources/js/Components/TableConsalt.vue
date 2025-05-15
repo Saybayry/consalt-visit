@@ -1,9 +1,13 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import axios from 'axios';
 import { usePage } from '@inertiajs/vue3';
 
 const page = usePage();
+
+const filterTeacher = ref('');
+const filterDiscipline = ref('');
+const filterDate = ref(''); // формат строки "YYYY-MM-DD"
 
 const props = defineProps({
   consultations: {
@@ -16,101 +20,13 @@ const props = defineProps({
 const showModal = ref(false);
 const selectedConsultation = ref(null);
 const isEditing = ref(false);
-
+const mode = ref('view');
 // Для редактируемых полей
 const editedConsultation = ref({
   class_date: '',
   class_number: 1,
   discipline_id: null, // новый параметр
 });
-
-const testConsole = () => {
-  console.log("Это тест для проверки работы console.log");
-};
-
-
-// запись студента и отписка от консультации
-const Enroll12 = async (consultation) => {
-    try {
-
-        const response = await fetch('/api/visiting', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`, // если используешь токен
-            },
-            body: JSON.stringify({
-                consultation_id: consultation.id,
-                is_present: false // или true, если нужно сразу отметить присутствие
-            })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Ошибка при записи:', errorData);
-            return;
-        }
-
-        const data = await response.json();
-        console.log('Успешная запись на консультацию:', data);
-    } catch (error) {
-        console.error('Ошибка при выполнении запроса:', error);
-    }
-};
-
-const Enroll2 = async (consultation) => {
-    try {
-        // Получаем токен
-        const token = localStorage.getItem('token');
-        
-        if (!token) {
-            console.error('Нет токена авторизации');
-            return;
-        }
-
-        const response = await fetch('/api/visiting', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Если токен есть
-            },
-            body: JSON.stringify({
-                consultation_id: consultation.id,
-                is_present: false, // или true, если нужно сразу отметить присутствие
-            })
-        });
-
-        // Проверка ответа
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Ошибка при записи:', errorData); // Можно вывести больше информации о том, что произошло
-            return;
-        }
-
-        // Получение данных из ответа
-        const data = await response.json();
-        console.log('Успешная запись на консультацию:', data);
-    } catch (error) {
-        console.error('Ошибка при выполнении запроса:', error);
-    }
-};
-
-
-// try {
-//     await axios.put(`/api/consultations/${selectedConsultation.value.id}`, {
-//       consultation_id: editedConsultation.value.class_date,
-//       class_number: editedConsultation.value.class_number,
-//       discipline_id: editedConsultation.value.discipline_id,
-//       group_ids: editedConsultation.value.group_ids, 
-//     });
-
-//     await props.refresh(); // обновление таблицы
-//     console.log('refresh called');
-
-//     closeModal(); // закрытие модального окна
-//   } catch (error) {
-//     console.error('Ошибка при обновлении консультации:', error);
-//   }
 
 
 
@@ -144,6 +60,8 @@ const Unenroll = async (consultation) =>{
     }
 }
 
+
+
 const openModal = (consultation) => {
   selectedConsultation.value = consultation;
 
@@ -154,6 +72,7 @@ const openModal = (consultation) => {
   };
   showModal.value = true;
   isEditing.value = false;
+  mode.value = 'view';
 };
 
 const teacherList = ref([]);
@@ -195,7 +114,7 @@ const selectTeacher = (teacherId) => {
 const openCreateModal = async () =>  {
   // Очищаем выбранную консультацию — это новая
   if  (page.props.auth.user.is_admin){
-    
+
     await loadTeachers(); // Загрузка списка преподавателей
     selectedConsultation.value = {
     teacher: null,  // Инициализация пустым значением
@@ -247,6 +166,7 @@ const openCreateModal = async () =>  {
 
   }
 
+  mode.value = 'create';
   showModal.value = true;
   isEditing.value = true;
   
@@ -279,11 +199,14 @@ const closeModal = () => {
   showModal.value = false;
   selectedConsultation.value = null;
   isEditing.value = false;
+  mode.value = 'view';
 };
 
 const startEditing = () => {
     console.log("Функция startEditing вызвана"); 
   isEditing.value = true;
+  mode.value = 'edit';
+
 };
 
 const saveChanges = async () => {
@@ -330,73 +253,109 @@ const Class_times = [
   "18:20",
   "20:00"
 ];
+
+
+// фильтрация
+const filteredConsultations = computed(() => {
+  return props.consultations.filter(c => {
+    const matchesTeacher = filterTeacher.value
+      ? (c.teacher.fname + ' ' + c.teacher.mname + ' ' + c.teacher.lname)
+          .toLowerCase()
+          .includes(filterTeacher.value.toLowerCase())
+      : true;
+
+    const matchesDiscipline = filterDiscipline.value
+      ? c.discipline.name.toLowerCase().includes(filterDiscipline.value.toLowerCase())
+      : true;
+
+    const matchesDate = filterDate.value
+      ? c.class_date === filterDate.value
+      : true;
+
+    return matchesTeacher && matchesDiscipline && matchesDate;
+  });
+});
 </script>
 
 
 <template>
   <div>
-  <div class="py-8">
+  <div class="py-8" v-if="page.props.auth.user.is_admin||page.props.auth.user.is_teacher"  >
     <button
     @click="openCreateModal()"
     class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
   >
     Создать
   </button>
-{{ page.props.auth.user }}
+<!-- {{ page.props.auth.user }} -->
   </div>
+<div class="mb-4 flex flex-col gap-2 sm:flex-row sm:gap-2">
+  <input
+    type="text"
+    v-model="filterTeacher"
+    placeholder="Фильтр по преподавателю"
+    class="border rounded px-2 py-1"
+  />
+  <input
+    type="text"
+    v-model="filterDiscipline"
+    placeholder="Фильтр по предмету"
+    class="border rounded px-2 py-1"
+  />
+  <input
+    type="date"
+    v-model="filterDate"
+    placeholder="Фильтр по дате"
+    class="border rounded px-2 py-1"
+  />
+</div>
 
 
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+  <table class="w-full text-xs sm:text-sm text-left sm:px-0 sm:py-0 text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase sm:px-0 sm:py-0 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
-          <th class="px-2 py-2 sm:px-6 sm:py-4">Преподаватель</th>
-          <th class="px-2 py-2 sm:px-6 sm:py-4">Предмет</th>
-          <th class="px-2 py-2 sm:px-6 sm:py-4">Дата</th>
-          <th class="px-2 py-2 sm:px-6 sm:py-4">Время</th>
-          <!-- <th class="px-6 py-3">Группы</th> -->
+          <th class="lg:px-2 lg:py-2 sm:px-0 sm:py-0">Преподаватель</th>
+          <th class="lg:px-2 lg:py-2 sm:px-0 sm:py-0">Предмет</th>
+          <th class="lg:px-2 lg:py-2 sm:px-0 sm:py-0">Дата/Время</th>
+
           <th class="px-2 py-2 sm:px-6 sm:py-4"></th>
         </tr>
       </thead>
       <tbody>
         <tr
-          v-for="(consultation, index) in consultations"
+          v-for="(consultation, index) in filteredConsultations"
           :key="index"
-          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+          class=" dark:border-gray-700"
+          :class="index % 2 === 0 ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'"
         >
           <th class="px-2 py-2 sm:px-6 sm:py-4 font-medium text-gray-900 dark:text-white ">
             {{ consultation.teacher.fname }} {{ consultation.teacher.mname }} {{ consultation.teacher.lname }}
           </th>
-          <td class="px-2 py-2 sm:px-6 sm:py-4">{{ consultation.discipline.name }}</td>
-          <td class="px-2 py-2 sm:px-6 sm:py-4">{{ consultation.class_date }}</td>
-          <td class="px-2 py-2 sm:px-6 sm:py-4">{{ Class_times[consultation.class_number - 1] }}</td>
-          <!-- <td class="px-6 py-4">
-            <span
-              v-for="(group, i) in consultation.groups"
-              :key="i"
-              class="mx-1 my-1 relative inline-block px-3 py-1 font-semibold text-blue-900 leading-tight"
-            >
-              <span class="absolute inset-0 bg-blue-200 opacity-50 rounded-full"></span>
-              <span class="relative">{{ group.name }}</span>
-            </span>
-          </td> -->
-          <td v-if="page.props.auth.user.is_admin||page.props.auth.user.is_teacher" class="px-6 py-4">
+          <td class="lg:px-2 lg:py-2 sm:px-0 sm:py-0">{{ consultation.discipline.name }}</td>
+          <td class="lg:px-2 lg:py-2 sm:px-0 sm:py-0">{{ consultation.class_date }} </br> {{ Class_times[consultation.class_number - 1] }}</td>
+
+          <td 
+          v-if="page.props.auth.user.is_admin||page.props.auth.user.is_teacher" 
+          class="lg:px-6 lg:py-4  sm:py-0  sm:px-0 align-middle">
             <button
               @click="openModal(consultation)"
-              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+              class="bg-blue-500 hover:bg-blue-600 text-white lg:px-6 py-4 rounded"
             >
               Подробнее
             </button>
           </td>
-          <td v-if="!page.props.auth.user.is_admin && !page.props.auth.user.is_teacher" class="px-6 py-4">
+          <td 
+          v-if="!page.props.auth.user.is_admin && !page.props.auth.user.is_teacher" 
+          class="lg:px-6 lg:py-4  sm:py-0  sm:px-0 align-middle">
             <button v-if="!consultation.registration"
               @click="Enroll(consultation)"
-              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+              class="bg-blue-500 hover:bg-blue-600 text-white lg:px-6 py-4 rounded"
             >
               Записатся
             </button>
             <button v-if="consultation.registration"
             @click="Unenroll(consultation)"
-            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+            class="bg-red-500 hover:bg-red-600 text-white lg:px-6 py-4 rounded"
           >
             отписатся
           </button>
@@ -423,8 +382,11 @@ const Class_times = [
           <div v-if="page.props.auth.user.is_admin" class="text-gray-800 dark:text-gray-300">
             <label class="text-gray-800 dark:text-gray-300"><strong>Преподаватель:</strong></label><br />
 
-            <select v-model="selectedConsultation.teacher.id" @change="selectTeacher(selectedConsultation.teacher.id)"
-             class="mt-1 w-full border rounded px-3 py-2 dark:bg-gray-800 dark:text-white">
+            <select v-model="selectedConsultation.teacher.id " 
+            @change="selectTeacher(selectedConsultation.teacher.id)"
+            :disabled="!isEditing"
+             class="mt-1 w-full border rounded px-3 py-2 dark:bg-gray-800 dark:text-white"
+             >
               <option v-for="teacher in teacherList" :key="teacher.id" :value="teacher.id">
                 {{ teacher.fname }} {{ teacher.mname }} {{ teacher.lname }} 
               </option>
@@ -487,29 +449,15 @@ const Class_times = [
         </div>
 
         <div class="flex justify-end mt-6 space-x-2">
+         <!-- Панель просмотра -->
+        <div v-if="mode === 'view'" class="flex justify-end mt-6 space-x-2">
           <button
-            v-if="!isEditing"
             @click="startEditing"
             class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
           >
             Редактировать
           </button>
-          
 
-          <button
-            v-if="isEditing"
-            @click="saveChanges"
-            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-          >
-            Сохранить изменения
-          </button>
-          <button
-            v-if="isEditing"
-            @click="createConsultation"
-            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-          >
-            Создать
-          </button>
           <button
             @click="deleteConsultation"
             class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
@@ -523,6 +471,48 @@ const Class_times = [
           >
             Закрыть
           </button>
+        </div>
+
+      <!-- Панель редактирования -->
+      <div v-if="mode === 'edit'" class="flex justify-end mt-6 space-x-2">
+        <button
+          @click="saveChanges"
+          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+        >
+          Сохранить изменения
+        </button>
+
+        <button
+          @click="deleteConsultation"
+          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+        >
+          Удалить
+        </button>
+
+        <button
+          @click="closeModal"
+          class="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
+        >
+          Закрыть
+        </button>
+      </div>
+
+      <!-- Панель создания -->
+      <div v-if="mode === 'create'" class="flex justify-end mt-6 space-x-2">
+        <button
+          @click="createConsultation"
+          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+        >
+          Создать
+        </button>
+
+        <button
+          @click="closeModal"
+          class="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
+        >
+          Закрыть
+        </button>
+      </div>
         </div>
       </div>
     </div>

@@ -16,7 +16,10 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('welcome');
+
+require __DIR__.'/auth.php';
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -69,23 +72,15 @@ Route::delete('/api/consultations/{id}', [ConsultationController::class, 'destro
 
 
 
-// Route::middleware(['auth'])->group(function () {
-//     Route::post('/api/consultation_registrations', [ConsultationController::class, 'store'])->name('api.consultation_registrations'); // Создать новую записть на конс
-//     Route::get('/api/consultation_registrations', [ConsultationController::class, 'index'])->name('api.consultation_registrations.index');
-//     Route::get('/api/consultation_registrations/{id}', [ConsultationController::class, 'show'])->name('api.consultation_registrations.show');
-//     Route::put('/api/consultation_registrations/{id}', [ConsultationController::class, 'update'])->name('api.consultation_registrations.update');
-//     Route::delete('/api/consultation_registrations/{id}', [ConsultationController::class, 'destroy'])->name('api.consultation_registrations.destroy');
-    
-// });
-
 // Консультации
 Route::get('/api/visitings/{id}', [ConsultationRegistrationController::class, 'showByConsalt'])->middleware(['auth'])->name('api.visiting.showByConsalt');
 
+Route::get('api/export', [ConsultationRegistrationController::class, 'exportExcel'])->middleware([])->name('api.export');;;
 Route::post('/api/visiting', [ConsultationRegistrationController::class, 'store'])->middleware([])->name('api.visiting');; // Создать новую группу
 Route::get('/api/visiting', [ConsultationRegistrationController::class, 'index'])->middleware(['auth'])->name('api.visiting.index');
 Route::get('/api/visiting/{id}', [ConsultationRegistrationController::class, 'show'])->middleware(['auth'])->name('api.visiting.show');
-Route::put('/api/visiting/{id}', [ConsultationRegistrationController::class, 'update'])->middleware(['auth'])->name('api.visiting.update');
-Route::delete('/api/visiting/{id}', [ConsultationRegistrationController::class, 'destroy'])->middleware(['auth'])->name('api.visiting.destroy');
+Route::put('/api/visiting/{id}', [ConsultationRegistrationController::class, 'update'])->middleware(['auth','teacher'])->name('api.visiting.update');
+Route::delete('/api/visiting/{id}', [ConsultationRegistrationController::class, 'destroy'])->middleware(['auth',])->name('api.visiting.destroy');
 
 
 
@@ -105,4 +100,4 @@ Route::put('/api/teachers/{id}', [TeacherController::class, 'update'])->middlewa
 Route::delete('/api/teachers/{id}', [TeacherController::class, 'destroy'])->middleware(['auth','admin'])->name('api.teachers'); // Удалить группу
 
 
-require __DIR__.'/auth.php';
+

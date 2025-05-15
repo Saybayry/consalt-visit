@@ -33,7 +33,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect('https://saybayry.ru.tuna.am/dashboard');
+        // return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**
@@ -47,6 +48,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('https://saybayry.ru.tuna.am');
+
+
     }
 }

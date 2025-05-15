@@ -15,6 +15,7 @@ return new class extends Migration
                 $table->id();
                 $table->foreignId('student_id')->constrained()->cascadeOnDelete();
                 $table->foreignId('consultation_id')->constrained()->cascadeOnDelete();
+                $table->text('noute')->nullable();
                 $table->boolean('is_present')->default(false); // Логическое поле для отметки присутствия
                 $table->timestamps();
             });

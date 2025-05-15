@@ -12,7 +12,7 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-900 sm:px-0">
             <nav
                 class="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800"
             >
@@ -22,7 +22,7 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex shrink-0 items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('dashboard', {}, false)">
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
                                     />
@@ -34,8 +34,8 @@ const showingNavigationDropdown = ref(false);
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('dashboard', {}, false)"
+                                    :active="route().current('dashboard', {}, false)"
                                 >
                                     Мои консультации
                                 </NavLink>
@@ -44,8 +44,8 @@ const showingNavigationDropdown = ref(false);
                             class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                         >
                             <NavLink
-                                :href="route('consalt')"
-                                :active="route().current('consalt')"
+                                :href="route('consalt', {}, false)"
+                                :active="route().current('consalt', {}, false)"
                             >
                                 Консультации
                             </NavLink>
@@ -54,8 +54,8 @@ const showingNavigationDropdown = ref(false);
                             class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                         >
                             <NavLink
-                                :href="route('teacher')"
-                                :active="route().current('teacher')"
+                                :href="route('teacher', {}, false)"
+                                :active="route().current('teacher', {}, false)"
                             >
                                 Преподаватели
                             </NavLink>
@@ -64,8 +64,8 @@ const showingNavigationDropdown = ref(false);
                             class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                         >
                             <NavLink
-                                :href="route('student-groups')"
-                                :active="route().current('student-groups')"
+                                :href="route('student-groups', {}, false)"
+                                :active="route().current('student-groups', {}, false)"
                             >
                                 Группы
                             </NavLink>
@@ -74,16 +74,16 @@ const showingNavigationDropdown = ref(false);
                             class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                         >
                             <NavLink
-                                :href="route('disciplines')"
-                                :active="route().current('disciplines')"
-                            >
-                                Предметы
+                                :href="route('disciplines', {}, false)"
+                                :active="route().current('disciplines', {}, false)"
+                                >
+                                Отчеты
                             </NavLink>
                             </div>
                             
                         </div>
 
-                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
+                        <div class="hidden sm:ms-6 sm:flex sm:items-center ">
                             <!-- Settings Dropdown -->
                             <div class="relative ms-3">
                                 <Dropdown align="right" width="48">
@@ -113,12 +113,12 @@ const showingNavigationDropdown = ref(false);
 
                                     <template #content>
                                         <DropdownLink
-                                            :href="route('profile.edit')"
+                                            :href="route('profile.edit', {}, false)"
                                         >
                                             Profile
                                         </DropdownLink>
                                         <DropdownLink
-                                            :href="route('logout')"
+                                            :href="route('logout', {}, false)"
                                             method="post"
                                             as="button"
                                         >
@@ -180,38 +180,47 @@ const showingNavigationDropdown = ref(false);
                     }"
                     class="sm:hidden"
                 >
-                    <div class="space-y-1 pb-3 pt-2">
+                    <div class="space-y-1 pb-3 pt-2 sm:px-0" >
                         <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('dashboard', {}, false)"
+                            :active="route().current('dashboard', {}, false)"
                         >
                             Мои консультации
                         </ResponsiveNavLink>
                     </div>
-                    <div class="space-y-1 pb-3 pt-2">
+                    <div class="space-y-1 pb-3 pt-2 sm:px-0">
                         <ResponsiveNavLink
-                            :href="route('consalt')"
-                            :active="route().current('consalt')"
+                            :href="route('consalt', {}, false)"
+                            :active="route().current('consalt', {}, false)"
                         >
                             Консультации
                         </ResponsiveNavLink>
                     </div>
-                    <div class="space-y-1 pb-3 pt-2">
+                    <div class="space-y-1 pb-3 pt-2 sm:px-0">
                         <ResponsiveNavLink
-                            :href="route('teacher')"
-                            :active="route().current('teacher')"
+                            :href="route('teacher', {}, false)"
+                            :active="route().current('teacher', {}, false)"
                         >
                             Учителя
                         </ResponsiveNavLink>
                     </div>
-                    <div class="space-y-1 pb-3 pt-2">
+                    <div class="space-y-1 pb-3 pt-2 sm:px-0">
                         <ResponsiveNavLink
-                            :href="route('student-groups')"
-                            :active="route().current('student-groups')"
+                            :href="route('student-groups', {}, false)"
+                            :active="route().current('student-groups', {}, false)"
                         >
                             Группы
                         </ResponsiveNavLink>
                     </div>
+                    <div class="space-y-1 pb-3 pt-2 sm:px-0">
+                        <ResponsiveNavLink
+                            :href="route('disciplines', {}, false)"
+                            :active="route().current('disciplines', {}, false)"
+                        >
+                        Отчеты
+                        </ResponsiveNavLink>
+                    </div>
+    
                     <!-- Responsive Settings Options -->
                     <div
                         class="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600"
@@ -228,11 +237,11 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')">
+                            <ResponsiveNavLink :href="route('profile.edit', {}, false)">
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
-                                :href="route('logout')"
+                                :href="route('logout', {}, false)"
                                 method="post"
                                 as="button"
                             >
@@ -248,7 +257,7 @@ const showingNavigationDropdown = ref(false);
                 class="bg-white shadow dark:bg-gray-800"
                 v-if="$slots.header"
             >
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-0 lg:px-3">
                     <slot name="header" />
                 </div>
             </header>
