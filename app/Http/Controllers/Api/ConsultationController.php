@@ -54,7 +54,7 @@ class ConsultationController extends Controller
 
         return response()->json(['message' => 'Consultation not found'], 404);
     }
-        public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $consultation = Consultation::find($id);
 
@@ -131,20 +131,36 @@ class ConsultationController extends Controller
         // Возвращаем успешный ответ
         return response()->json(['message' => 'Consultation created successfully', 'consultation' => $consultation], 201);
     }
-    public function showWithRegistrations()
+    public function showWithRegistrations(Request $request)
     {
+        $user = $request->user();
+        if ($user->is_admin || $user->is_teacher) {
         $consultation = Consultation::with([
             'teacher.disciplines',
             'discipline',
             'groups',
             'registrations.student.group',
         ])->get();
-
         if (!$consultation) {
             return response()->json(['message' => 'Consultation not found'], 404);
         }
+        return response()->json($consultation);}
+        else {
+        // Получаем объект студента текущего пользователя
+        $student = $user->student;
 
-        return response()->json($consultation);
+        if (!$student) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+
+        // Получаем регистрации студента с вложенными консультациями
+        $registrations = $student->consultationRegistrations()
+            ->with('consultation.teacher', 'consultation.discipline', 'consultation.groups','consultation.discipline',)
+            ->get();
+
+        return response()->json($registrations);
+    }
+
     }
     
 

@@ -19,11 +19,15 @@ class Student extends Model
     {
         return $this->belongsTo(Group::class);
     }
-    public function consultations()
+    public function consultation_registrations()
     {
-        return $this->belongsToMany(Consultation::class, 'visitings')
+        return $this->belongsToMany(Consultation::class, 'consultation_registrations')
                     ->withPivot('is_present') // Поле для отметки присутствия
                     ->withTimestamps();
+    }
+    public function consultationRegistrations()
+    {
+        return $this->hasMany(ConsultationRegistration::class);
     }
 
     // Связь с моделью User

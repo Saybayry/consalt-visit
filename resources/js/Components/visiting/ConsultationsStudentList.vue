@@ -126,14 +126,10 @@ onMounted(() => {
 
 <!-- {{ consultations_with_registrations }} -->
   <template v-for="(consreg, index) in consultations_with_registrations.registrations" :key="index">
-              <tr>
+              <tr  :class="index % 2 === 0 ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'">
                 <!-- {{ consreg.student.lname}} -->
                 <td 
-                class="lg:px-2 lg:py-2 sm:px-0 sm:py-0 border-b
-                 border-gray-200 bg-white text-sm
-                  dark:text-gray-400  dark:bg-gray-700 
-                  align-middle
-                 ">
+                class="lg:px-2 lg:py-2 sm:px-0 sm:py-0 border-balign-middle">
                   <p class="text-gray-900 whitespace-no-wrap dark:text-white">
                     {{consreg.student.lname }}
                   </br>
@@ -145,14 +141,14 @@ onMounted(() => {
                   </p>
                 </td>
 
-                <td class="lg:px-2 lg:py-2 sm:px-0 sm:py-5 border-b border-gray-200 bg-white text-sm 
+                <td class="lg:px-2 lg:py-2 sm:px-0 sm:py-5 border-b text-sm 
                 
-                 dark:text-gray-400  dark:bg-gray-700 
+                 
                  align-middle">
                   <p class="text-gray-900 dark:text-white whitespace-no-wrap">{{consreg.student.group.name }}</p>
                 </td>
                 <td  
-                class="lg:px-2 lg:py-2 sm:px-0 sm:py-5 border-b border-gray-200 bg-white text-sm 
+                class="lg:px-2 lg:py-2 sm:px-0 sm:py-5 border-b  text-sm 
                 dark:text-gray-400  dark:bg-gray-700 
                 align-middle">
                   <button v-if="consreg.is_present"
@@ -168,13 +164,15 @@ onMounted(() => {
               не пришел
               </button>
                 </td>
-              </tr>
-              <tr class="border-b-4 border-gray-300">
+              </tr >
+              <tr class="border-b-4 border-gray-300"
+              :class="index % 2 === 0 ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'">
                   <td colspan="2" class="align-middle">
                     <div class="space-y-2">
                       <textarea
                         v-model="consreg.noute"
-                        class="w-full rounded border-gray-300 dark:bg-gray-700 dark:text-white dark:border-gray-600 px-2 py-1 text-sm"
+                        class="w-full rounded-600 px-2 py-1 text-sm"
+                        :class="index % 2 === 0 ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'"
                         placeholder="Введите заметку..."
                         rows="2"
                         maxlength="300" 
@@ -182,9 +180,7 @@ onMounted(() => {
                     </div>
                   </td>
                 <td  
-                class="lg:px-2 lg:py-2 sm:px-0 sm:py-5 border-b border-gray-200 bg-white text-sm 
-                dark:text-gray-400  dark:bg-gray-700 
-                align-middle">
+                class="lg:px-2 lg:py-2 sm:px-0 sm:py-5 border-b text-sm align-middle">
                   <button
                     @click="updateNote(consreg)"
                       class="w-full h-full text-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"

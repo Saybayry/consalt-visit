@@ -33,45 +33,30 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container mx-auto px-4 sm:px-8">
-    <div class="py-8">
-      <div>
-        <h2 class="text-2xl font-semibold leading-tight">Invoices</h2>
-      </div>
-      <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+  <div class="container mx-auto lg:px-4 sm:px-0 py-0">
+    <div class="py-0">
+      <div class=" sm:-mx-8 lg:px-4 sm:px-8 py-0 overflow-x-auto">
         <div
-          class="inline-block min-w-full shadow-md rounded-lg overflow-hidden"
+          class="inline-block min-w-full shadow-md overflow-hidden"
         >
           <table class="min-w-full leading-normal">
             <thead>
               <tr>
-                <!-- <th
-                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  Студент
-                </th> -->
+
                 <th
-                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                  class="lg:px-5 sm:px-0 py-3 border-b-2
+                   border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                 >
-                  Фамилия
+                  ФИО
                 </th>
                 <th
-                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  Имя
-                </th>
-                <th
-                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
-                >
-                  Отчество
-                </th>
-                <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                class="lg:px-5 sm:px-0  border-b-2
+                 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
               >
                 email
               </th>
                 <th
-                  class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100"
+                  class="lg:px-5 sm:px-0  border-b-2 border-gray-200 bg-gray-100"
                 ></th>
               </tr>
             </thead>
@@ -79,20 +64,21 @@ onMounted(() => {
 
 
               <tr v-for="(student, index) in students" :key="index" >
+
                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p class="text-gray-900 whitespace-no-wrap">{{student.lname }}</p>
+                  <p class="text-gray-900 whitespace-no-wrap">
+                    {{student.lname }}
+                    {{student.fname }}
+                    {{student.mname }}
+                  </p>
                 </td>
-                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p class="text-gray-900 whitespace-no-wrap">{{student.fname }}</p>
-                </td>
-                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p class="text-gray-900 whitespace-no-wrap">{{student.mname }}</p>
-                </td>
-                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+               
+                <td class="lg:px-5 sm:px-0 border-b border-gray-200 bg-white text-sm">
                   <p class="text-gray-900 whitespace-no-wrap">{{student.user.email }}</p>
                 </td>
+
                 <td
-                  class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right"
+                  class="lg:px-5 sm:px-0  border-b border-gray-200 bg-white text-sm text-right"
                 >
 
 

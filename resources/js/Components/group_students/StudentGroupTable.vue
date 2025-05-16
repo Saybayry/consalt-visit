@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import StudentTable from '@/Components/StudentTable.vue';
+import StudentTable from '@/Components/group_students/StudentTable.vue';
 // Управление состоянием
 const activeIndex = ref(null); // Индекс активного элемента
 
@@ -22,16 +22,19 @@ defineProps({
 </script>
 
 <template>
-  <div class="container mx-auto px-4 sm:px-8 py-8">
+  <div class="container mx-auto lg:px-4 sm:px-8 lg:py-8">
     <h2 class="text-2xl font-semibold leading-tight mb-4">Accordion</h2>
 
     <div class="shadow-md rounded-lg border border-gray-200">
       <!-- Аккордеон, начинаем итерацию -->
-      <div v-for="(group, index) in groups" :key="index" class="border-b last:border-b-0">
+      <div v-for="(group, index) in groups" :key="index" 
+      class="border-b last:border-b-0"
+      >
         <!-- Заголовок аккордеона -->
         <button
           @click="toggleItem(group)"
-          class="w-full flex justify-between items-center px-6 py-4 bg-gray-100 text-left text-gray-700 hover:bg-gray-200 focus:outline-none"
+          class="w-full flex justify-between items-center px-6 py-4 focus:outline-none"
+           :class="index % 2 === 0 ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'"
         >
           <span class="font-medium">{{ group.name }}</span>
           <svg
@@ -49,7 +52,7 @@ defineProps({
         <!-- Контент аккордеона -->
         <div
           v-if="activeIndex === group"
-          class="px-6 py-4 bg-white text-gray-700"
+          class="lg:px-6 sm:px-0 py-4 bg-white text-gray-700"
         >
           <StudentTable v-bind:group="group"/>
 

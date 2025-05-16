@@ -1,15 +1,18 @@
 <script setup>
 import { ref , computed} from 'vue';
-import StudentTable from '@/Components/StudentTable.vue';
-import ConsultationsStudentList from './ConsultationsStudentList.vue';
+
+import ConsultationsStudentList from '@/Components/visiting/ConsultationsStudentList.vue';
 import { usePage } from '@inertiajs/vue3';
 // Управление состоянием
 const activeIndex = ref(null); // Индекс активного элемента
-const searchQuery = ref(''); // строка фильтрации
 
 const filterTeacher = ref('');
 const filterDiscipline = ref('');
-const filterDate = ref(''); // формат строки "YYYY-MM-DD"
+
+
+const filterDateFrom = ref('');
+const filterDateTo = ref('');
+
 const page = usePage();
 // Метод для переключения
 const toggleItem = (index) => {
@@ -34,23 +37,30 @@ const Class_times = [
   "18:20",
   "20:00"
 ];
+// фильтрация
 const filteredConsultations = computed(() => {
   return props.consultations.filter(c => {
+    // Фильтр по преподавателю
     const matchesTeacher = filterTeacher.value
       ? (c.teacher.fname + ' ' + c.teacher.mname + ' ' + c.teacher.lname)
           .toLowerCase()
           .includes(filterTeacher.value.toLowerCase())
       : true;
 
+    // Фильтр по дисциплине
     const matchesDiscipline = filterDiscipline.value
       ? c.discipline.name.toLowerCase().includes(filterDiscipline.value.toLowerCase())
       : true;
 
-    const matchesDate = filterDate.value
-      ? c.class_date === filterDate.value
-      : true;
+    // Фильтр по дате от и до
+    const consultationDate = new Date(c.class_date);
+    const fromDate = filterDateFrom.value ? new Date(filterDateFrom.value) : null;
+    const toDate = filterDateTo.value ? new Date(filterDateTo.value) : null;
 
-    return matchesTeacher && matchesDiscipline && matchesDate;
+    const matchesDateFrom = fromDate ? consultationDate >= fromDate : true;
+    const matchesDateTo = toDate ? consultationDate <= toDate : true;
+
+    return matchesTeacher && matchesDiscipline && matchesDateFrom && matchesDateTo;
   });
 });
 
@@ -65,26 +75,32 @@ const filteredConsultations = computed(() => {
 
 <!-- {{ page.props.auth.user }} -->
   </div>
-<div class="mb-4 flex flex-col gap-2 sm:flex-row sm:gap-2">
-  <input
-    type="text"
-    v-model="filterTeacher"
-    placeholder="Фильтр по преподавателю"
-    class="border rounded px-2 py-1"
-  />
-  <input
-    type="text"
-    v-model="filterDiscipline"
-    placeholder="Фильтр по предмету"
-    class="border rounded px-2 py-1"
-  />
-  <input
-    type="date"
-    v-model="filterDate"
-    placeholder="Фильтр по дате"
-    class="border rounded px-2 py-1"
-  />
-</div>
+    <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:gap-2">
+      <input
+        type="text"
+        v-model="filterTeacher"
+        placeholder="Фильтр по преподавателю"
+        class="border rounded px-2 py-1"
+      />
+      <input
+        type="text"
+        v-model="filterDiscipline"
+        placeholder="Фильтр по предмету"
+        class="border rounded px-2 py-1"
+      />
+      <input
+        type="date"
+        v-model="filterDateFrom"
+        placeholder="Дата с"
+        class="border rounded px-2 py-1"
+      />
+      <input
+        type="date"
+        v-model="filterDateTo"
+        placeholder="Дата по"
+        class="border rounded px-2 py-1"
+      />
+    </div>
 
     
       <!-- Аккордеон, начинаем итерацию -->
@@ -93,10 +109,9 @@ const filteredConsultations = computed(() => {
         <button
         @click="toggleItem(consultation)"
         class="w-full grid grid-cols-7 lg:gap-4 sm:gap-0 items-start lg:px-6 lg:py-4 sm:px-0
-         bg-gray-100 text-left text-gray-700 hover:bg-gray-200 focus:outline-none
-         dark:text-gray-400  dark:bg-gray-700 dark:hover:bg-gray-800 dark:focus:outline-none
-   
-         "
+         text-left text-gray-700  focus:outline-none
+         dark:text-gray-400 "
+        :class="index % 2 === 0 ? 'bg-gray-200 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'"
       >
         <span 
           class="

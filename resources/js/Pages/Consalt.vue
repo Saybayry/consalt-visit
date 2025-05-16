@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import TableConsalt from '@/Components/TableConsalt.vue';
+import TableConsalt from '@/Components/all_consalt/TableConsalt.vue';
 
 import { onMounted, ref } from 'vue';
 import axios from 'axios';

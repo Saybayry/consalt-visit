@@ -305,9 +305,22 @@ function handleImageError() {
                                 <div class="mt-4 space-y-2 text-sm text-black dark:text-zinc-300">
                                     <p><strong>Данные для тестирования:</strong></p>
                                     <ul class="list-disc pl-5 space-y-1">
-                                        <li><strong>Преподаватель:</strong> bill.hartmann@example.com / password</li>
+                                        <li><strong>Преподаватель:</strong> aleen26@example.org/ password</li>
+                                        <li><strong>Преподаватель:</strong> shields.grover@example.net/ password</li>
+                                        <li><strong>Преподаватель:</strong> ernie.fritsch@example.net/ password</li>
+                                        <li><strong>Преподаватель:</strong> breitenberg.keshaun@example.com/ password</li>
+                                        <li><strong>Преподаватель:</strong> ebert.elmira@example.com/ password</li>
+                                        <li><strong>Преподаватель:</strong> orville09@example.com/ password</li>
+
                                         <li><strong>Студент:</strong> schimmel.warren@example.net / password</li>
-                                        <li><strong>Администратор:</strong> cormier.ivy@example.org / password</li>
+                                        <li><strong>Студент:</strong> jeanne03@example.org / password</li>
+                                        <li><strong>Студент:</strong> teagan41@example.org / password</li>
+                                        <li><strong>Студент:</strong> jeramy83@example.net / password</li>
+                                        <li><strong>Студент:</strong> claudine38@example.net / password</li>
+                                        <li><strong>Студент:</strong> anjali92@example.net / password</li>
+                                        <li><strong>Студент:</strong> jodie.heller@example.com / password</li>
+                                        <li><strong>Студент:</strong> omer01@example.org / password</li>
+                                        <li><strong>Администратор:</strong> Admin@example.com / password</li>
                                     </ul>
                                 </div>
                             </div>

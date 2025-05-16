@@ -2,10 +2,18 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import axios from 'axios';
+import { ref } from 'vue';
+
+const startDate = ref('');
+const endDate = ref('');
 
 const getExel = async () => {
   try {
     const response = await axios.get('/api/export', {
+      params: {
+        start_date: startDate.value,
+        end_date: endDate.value,
+      },
       responseType: 'blob', // очень важно для бинарных данных
     });
 
@@ -29,8 +37,8 @@ const getExel = async () => {
 
 <template>
     <Head title="Consalt" />
-
     <AuthenticatedLayout>
+      
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"
@@ -45,9 +53,21 @@ const getExel = async () => {
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
                     <div class="p-6 text-gray-900 dark:text-gray-100">
+                        <input
+                          type="date"
+                          v-model="startDate"
+                          placeholder="Дата с"
+                          class="border rounded px-2 py-1"
+                        />
+                        <input
+                          type="date"
+                          v-model="endDate"
+                          placeholder="Дата по"
+                          class="border rounded px-2 py-1"
+                        />
                         <button
                         @click="getExel"
-                        class="bg-blue-300 hover:bg-blue-400 px-4 py-2 rounded"
+                        class="bg-blue-500 hover:bg-blue-800 px-4 py-2 rounded"
                       >
                         Сформировать отчет
                       </button>

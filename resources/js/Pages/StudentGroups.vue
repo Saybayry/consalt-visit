@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import StudentGroupTable from '@/Components/StudentGroupTable.vue';
+import StudentGroupTable from '@/Components/group_students/StudentGroupTable.vue';
 // Правильный способ - один default export в модуле
 // Переменная для хранения групп
 import { onMounted, ref } from 'vue';
@@ -43,7 +43,7 @@ onMounted(() => {
                 <div
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <div class="p-0 text-gray-900 dark:text-gray-100">
                         <StudentGroupTable :groups="groups"  />
                     </div>
                 </div>

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ConsultationRegistration;
 use App\Models\Consultation;
-
+use App\Models\Student;
 use App\Exports\ConsultationRegistrationsExport;
 use Maatwebsite\Excel\Facades\Excel;
 class ConsultationRegistrationController extends Controller
@@ -14,9 +14,26 @@ class ConsultationRegistrationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return ConsultationRegistration::all();
+        $user = $request->user();
+        if ($user->is_admin || $user->is_teacher) {
+            return ConsultationRegistration::all();
+        }else {
+            // Получаем объект студента текущего пользователя
+            $student = $user->student;
+
+            // Ищем регистрацию с нужным id, которая принадлежит именно этому студенту
+            $registrations = ConsultationRegistration::with(['student.group'])
+                ->where('student_id', $student->id)
+                ->get();
+
+            if (!$registrations) {
+                // Если регистрации нет или она не принадлежит студенту — 404 или другое сообщение
+                return response()->json(['message' => 'Registration not found or access denied'], 404);
+            }
+            return response()->json($registrations);
+        }
     }
 
     /**
@@ -58,10 +75,28 @@ class ConsultationRegistrationController extends Controller
 
     /**
      * Display the specified resource.
-     */public function show($id)
-    {
-        $registration = ConsultationRegistration::with(['student.group'])->findOrFail($id);
-        return response()->json($registration);
+     */public function show($id, Request $request)
+    {   $user = $request->user();
+         if ($user->is_admin || $user->is_teacher) {
+                $registration = ConsultationRegistration::with(['student.group'])->findOrFail($id);
+                return response()->json($registration);
+        }else{
+            $student = $user->student();
+              // Ищем регистрацию с нужным id, которая принадлежит именно этому студенту
+            $registration = ConsultationRegistration::with(['student.group'])
+                ->where('id', $id)
+                ->where('student_id', $student->id)
+                ->first();
+
+            if (!$registration) {
+                // Если регистрации нет или она не принадлежит студенту — 404 или другое сообщение
+                return response()->json(['message' => 'Registration not found or access denied'], 404);
+            }
+
+            return response()->json($registration);
+        }
+        // $registration = ConsultationRegistration::with(['student.group'])->findOrFail($id);
+        // return response()->json($registration);
     }
     /**
      * Update the specified resource in storage.
@@ -107,9 +142,14 @@ class ConsultationRegistrationController extends Controller
         return response()->json(['error' => 'Доступ запрещен.'], 403);
     }
 
-        public function exportExcel()
+
+
+        public function exportExcel(Request $request)
     {
-        return Excel::download(new ConsultationRegistrationsExport, 'consultation_registrations.xlsx');
+            $start_date = $request->query('start_date'); // или $request->input('start_date')
+            $end_date = $request->query('end_date');
+
+            return Excel::download(new ConsultationRegistrationsExport($start_date, $end_date), 'consultation_registrations.xlsx');
     }
 
 

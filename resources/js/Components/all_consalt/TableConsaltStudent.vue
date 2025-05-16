@@ -158,119 +158,119 @@ const openModal = (consultation) => {
 
 const teacherList = ref([]);
 
-const loadTeachers = async () => {
-  try {
-    const response = await axios.get('/api/teachers');
-    teacherList.value = response.data;
-  } catch (error) {
-    console.error('Ошибка при загрузке списка преподавателей:', error);
-  }
-};
+// const loadTeachers = async () => {
+//   try {
+//     const response = await axios.get('/api/teachers');
+//     teacherList.value = response.data;
+//   } catch (error) {
+//     console.error('Ошибка при загрузке списка преподавателей:', error);
+//   }
+// };
 
 
-const selectTeacher = (teacherId) => {
+// const selectTeacher = (teacherId) => {
 
-  const selectedTeacher = teacherList.value.find(teacher => teacher.id === teacherId);
-  if (selectedTeacher) {
+//   const selectedTeacher = teacherList.value.find(teacher => teacher.id === teacherId);
+//   if (selectedTeacher) {
 
-    // Заменяем весь объект преподавателя
-    // selectedConsultation.value.teacher = selectedTeacher;
-    Object.assign(selectedConsultation.value.teacher, selectedTeacher);
-    editedConsultation.value.teacher_id = selectedTeacher.id;
-    // Очищаем дисциплину в случае изменения преподавателя
-    editedConsultation.value.discipline_id = null;
+//     // Заменяем весь объект преподавателя
+//     // selectedConsultation.value.teacher = selectedTeacher;
+//     Object.assign(selectedConsultation.value.teacher, selectedTeacher);
+//     editedConsultation.value.teacher_id = selectedTeacher.id;
+//     // Очищаем дисциплину в случае изменения преподавателя
+//     editedConsultation.value.discipline_id = null;
 
-    // Если у нового преподавателя есть дисциплины, выбираем первую, иначе сбрасываем дисциплину
-    if (selectedTeacher.disciplines.length > 0) {
-      editedConsultation.value.discipline_id = selectedTeacher.disciplines[0]?.id || null;
-    } else {
-      editedConsultation.value.discipline_id = null; // Если у преподавателя нет дисциплин
-    }
-  }
-};
-
-
+//     // Если у нового преподавателя есть дисциплины, выбираем первую, иначе сбрасываем дисциплину
+//     if (selectedTeacher.disciplines.length > 0) {
+//       editedConsultation.value.discipline_id = selectedTeacher.disciplines[0]?.id || null;
+//     } else {
+//       editedConsultation.value.discipline_id = null; // Если у преподавателя нет дисциплин
+//     }
+//   }
+// };
 
 
-const openCreateModal = async () =>  {
-  // Очищаем выбранную консультацию — это новая
-  if  (page.props.auth.user.is_admin){
+
+
+// const openCreateModal = async () =>  {
+//   // Очищаем выбранную консультацию — это новая
+//   if  (page.props.auth.user.is_admin){
     
-    await loadTeachers(); // Загрузка списка преподавателей
-    selectedConsultation.value = {
-    teacher: null,  // Инициализация пустым значением
-    discipline_id: null,
-  };
-    // запрасить список учителей и вывести его в 
-    selectedConsultation.value = {
-    teacher: {
-      id :0,
-      fname:  '',
-      mname:  '' ,
-      lname:  '',
-      disciplines: [],
-    },
-    groups: [],
-    };
+//     await loadTeachers(); // Загрузка списка преподавателей
+//     selectedConsultation.value = {
+//     teacher: null,  // Инициализация пустым значением
+//     discipline_id: null,
+//   };
+//     // запрасить список учителей и вывести его в 
+//     selectedConsultation.value = {
+//     teacher: {
+//       id :0,
+//       fname:  '',
+//       mname:  '' ,
+//       lname:  '',
+//       disciplines: [],
+//     },
+//     groups: [],
+//     };
 
-  // Подготовка новой "пустой" консультации
-  editedConsultation.value = {
-    class_date: "",
-    class_number: 1, // лучше сразу число от 1 до 8
-    discipline_id: null,
-    group_ids: [], // если ты используешь выбор групп
-    teacher_id:selectedConsultation.value.teacher.id,
-  };
-  }
-  else if (page.props.auth.user.is_teacher) {
-  selectedConsultation.value = {
-    teacher: {
-      id:page.props.auth.user.teacher.id,
-      fname: page.props.auth.user.teacher.fname,
-      mname: page.props.auth.user.teacher.mname,
-      lname: page.props.auth.user.teacher.lname,
-      disciplines: page.props.auth.user.teacher.disciplines,
-    },
-    groups: [],
+//   // Подготовка новой "пустой" консультации
+//   editedConsultation.value = {
+//     class_date: "",
+//     class_number: 1, // лучше сразу число от 1 до 8
+//     discipline_id: null,
+//     group_ids: [], // если ты используешь выбор групп
+//     teacher_id:selectedConsultation.value.teacher.id,
+//   };
+//   }
+//   else if (page.props.auth.user.is_teacher) {
+//   selectedConsultation.value = {
+//     teacher: {
+//       id:page.props.auth.user.teacher.id,
+//       fname: page.props.auth.user.teacher.fname,
+//       mname: page.props.auth.user.teacher.mname,
+//       lname: page.props.auth.user.teacher.lname,
+//       disciplines: page.props.auth.user.teacher.disciplines,
+//     },
+//     groups: [],
 
-    };
-      // Подготовка новой "пустой" консультации
-  editedConsultation.value = {
-    class_date: "",
-    class_number: 1, // лучше сразу число от 1 до 8
-    discipline_id: null,
-    group_ids: [], // если ты используешь выбор групп
-    teacher_id:page.props.auth.user.teacher.id,
-  };
-  }
-  else{
+//     };
+//       // Подготовка новой "пустой" консультации
+//   editedConsultation.value = {
+//     class_date: "",
+//     class_number: 1, // лучше сразу число от 1 до 8
+//     discipline_id: null,
+//     group_ids: [], // если ты используешь выбор групп
+//     teacher_id:page.props.auth.user.teacher.id,
+//   };
+//   }
+//   else{
 
-  }
+//   }
 
-  showModal.value = true;
-  isEditing.value = true;
+//   showModal.value = true;
+//   isEditing.value = true;
   
-};
+// };
 
-const createConsultation = async () => {
-  try {
-    // Создание новой консультации
-    await axios.post('/api/consultations', {
-      teacher_id :editedConsultation.value.teacher_id,
-      class_date: editedConsultation.value.class_date,
-      class_number: editedConsultation.value.class_number,
-      discipline_id: editedConsultation.value.discipline_id,
-      group_ids: [1,2],
-    });
+// const createConsultation = async () => {
+//   try {
+//     // Создание новой консультации
+//     await axios.post('/api/consultations', {
+//       teacher_id :editedConsultation.value.teacher_id,
+//       class_date: editedConsultation.value.class_date,
+//       class_number: editedConsultation.value.class_number,
+//       discipline_id: editedConsultation.value.discipline_id,
+//       group_ids: [1,2],
+//     });
 
-    await props.refresh(); // обновление таблицы
-    // console.log('refresh called');
+//     await props.refresh(); // обновление таблицы
+//     // console.log('refresh called');
 
-    closeModal(); // закрытие модального окна
-  } catch (error) {
-    console.error('Ошибка при создании консультации:', error);
-  }
-};
+//     closeModal(); // закрытие модального окна
+//   } catch (error) {
+//     console.error('Ошибка при создании консультации:', error);
+//   }
+// };
 
 
 
@@ -286,37 +286,37 @@ const startEditing = () => {
   isEditing.value = true;
 };
 
-const saveChanges = async () => {
-  try {
-    await axios.put(`/api/consultations/${selectedConsultation.value.id}`, {
-      class_date: editedConsultation.value.class_date,
-      class_number: editedConsultation.value.class_number,
-      discipline_id: editedConsultation.value.discipline_id,
-      group_ids: editedConsultation.value.group_ids, 
-    });
+// const saveChanges = async () => {
+//   try {
+//     await axios.put(`/api/consultations/${selectedConsultation.value.id}`, {
+//       class_date: editedConsultation.value.class_date,
+//       class_number: editedConsultation.value.class_number,
+//       discipline_id: editedConsultation.value.discipline_id,
+//       group_ids: editedConsultation.value.group_ids, 
+//     });
 
-    await props.refresh(); // обновление таблицы
-    console.log('refresh called');
+//     await props.refresh(); // обновление таблицы
+//     console.log('refresh called');
 
-    closeModal(); // закрытие модального окна
-  } catch (error) {
-    console.error('Ошибка при обновлении консультации:', error);
-  }
-};
+//     closeModal(); // закрытие модального окна
+//   } catch (error) {
+//     console.error('Ошибка при обновлении консультации:', error);
+//   }
+// };
 
-const deleteConsultation = async () => {
-  if (confirm('Удалить консультацию?')) {
-    try {
-      await axios.delete(`/api/consultations/${selectedConsultation.value.id}`);
-      await props.refresh();
-      console.log('refresh called');
+// const deleteConsultation = async () => {
+//   if (confirm('Удалить консультацию?')) {
+//     try {
+//       await axios.delete(`/api/consultations/${selectedConsultation.value.id}`);
+//       await props.refresh();
+//       console.log('refresh called');
 
-      closeModal();
-    } catch (error) {
-      console.error('Ошибка при удалении консультации:', error);
-    }
-  }
-};
+//       closeModal();
+//     } catch (error) {
+//       console.error('Ошибка при удалении консультации:', error);
+//     }
+//   }
+// };
 
 
 
@@ -390,8 +390,17 @@ const Class_times = [
       </tbody>
     </table>
 
+    <ConsultationModal
+      :show="showModal"
+      :consultation="selectedConsultation"
+      :teacherList="teacherList"
+      :auth="page.props.auth.user"
+      :classTimes="Class_times"
+      @refresh="refreshConsultations"
+      @close="closeModal"
+    />
     <!-- Модальное окно -->
-    <div
+    <!-- <div
       v-if="showModal"
       class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
     >
@@ -399,12 +408,11 @@ const Class_times = [
         <h2 class="text-xl font-bold mb-4 dark:text-white">Детали консультации</h2>
 
         <div class="space-y-3">
-          <!-- -----для учителя--------- -->
           <div     v-if="page.props.auth.user.is_teacher && !page.props.auth.user.is_admin" class="text-gray-800 dark:text-gray-300">
             <strong>Преподаватель:</strong>
             {{ selectedConsultation.teacher.fname }} {{ selectedConsultation.teacher.mname }} {{ selectedConsultation.teacher.lname }}
           </div>
-          <!-- для админа  -->
+
           <div v-if="page.props.auth.user.is_admin" class="text-gray-800 dark:text-gray-300">
             <label class="text-gray-800 dark:text-gray-300"><strong>Преподаватель:</strong></label><br />
 
@@ -417,7 +425,6 @@ const Class_times = [
           </div>
 
           
-          <!-- -------------------------------- -->
           <div>
             <label class="text-gray-800 dark:text-gray-300"><strong>Предмет:</strong></label><br />
      
@@ -510,6 +517,8 @@ const Class_times = [
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
+
+    
   </div>
 </template>
