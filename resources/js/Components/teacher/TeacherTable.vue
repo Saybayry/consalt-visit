@@ -51,9 +51,10 @@ defineProps({
                           <span
                             aria-hidden
                             class="absolute inset-0"
-                            :class="index % 2 === 0 ? 'bg-blue-200  dark:bg-blue-600 ' : 'bg-green-200 dark:bg-green-600'"
+                            :class="index % 2 === 0 ? 'text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2' : ' text-white bg-gradient-to-r from-cyan-500 to-blue-500 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'"
                             style="opacity: 0.5; border-radius: 0.5rem; padding: 0.25rem;"
                           ></span>
+                          
                           <span class="relative">
                             {{discipline.name}}
                         </span>

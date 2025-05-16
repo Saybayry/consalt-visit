@@ -52,26 +52,29 @@ const getExel = async () => {
                 <div
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <input
-                          type="date"
-                          v-model="startDate"
-                          placeholder="Дата с"
-                          class="border rounded px-2 py-1"
-                        />
-                        <input
-                          type="date"
-                          v-model="endDate"
-                          placeholder="Дата по"
-                          class="border rounded px-2 py-1"
-                        />
-                        <button
+                    <div class="p-6 text-gray-900 dark:text-gray-100 flex flex-col md:flex-row justify-end">
+                      <input
+                        type="date"
+                        v-model="startDate"
+                        placeholder="Дата с"
+                        class="m-3 full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full md:w-auto ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                      <input
+                        type="date"
+                        v-model="endDate"
+                        placeholder="Дата по"
+                        class="m-3 full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full md:w-auto ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                      <button
                         @click="getExel"
-                        class="bg-blue-500 hover:bg-blue-800 px-4 py-2 rounded"
-                      >
+                        class="m-3 md:w-auto sm:full  w-full md:w-auto ps-10 p-2.5  text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+
+
+                        >
                         Сформировать отчет
                       </button>
                     </div>
+
                 </div>
             </div>
         </div>

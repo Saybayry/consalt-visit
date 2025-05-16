@@ -296,7 +296,8 @@ const filteredConsultations = computed(() => {
   <div class="py-8" v-if="page.props.auth.user.is_admin||page.props.auth.user.is_teacher"  >
     <button
     @click="openCreateModal()"
-    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+    class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+
   >
     Создать
   </button>
@@ -308,25 +309,27 @@ const filteredConsultations = computed(() => {
         type="text"
         v-model="filterTeacher"
         placeholder="Фильтр по преподавателю"
-        class="border rounded px-2 py-1"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
       />
       <input
         type="text"
         v-model="filterDiscipline"
         placeholder="Фильтр по предмету"
-        class="border rounded px-2 py-1"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
       />
       <input
         type="date"
         v-model="filterDateFrom"
         placeholder="Дата с"
-        class="border rounded px-2 py-1"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       />
       <input
         type="date"
         v-model="filterDateTo"
         placeholder="Дата по"
-        class="border rounded px-2 py-1"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       />
     </div>
 
@@ -359,7 +362,7 @@ const filteredConsultations = computed(() => {
           class="lg:px-6 lg:py-4  sm:py-0  sm:px-0 align-middle">
             <button
               @click="openModal(consultation)"
-              class="bg-blue-500 hover:bg-blue-600 text-white lg:px-6 py-4 rounded"
+              class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm lg:px-5 py-2.5 sm:px-0 text-center me-2 mb-2"
             >
               Подробнее
             </button>
@@ -369,13 +372,15 @@ const filteredConsultations = computed(() => {
           class="lg:px-6 lg:py-4  sm:py-0  sm:px-0 align-middle">
             <button v-if="!consultation.registration"
               @click="Enroll(consultation)"
-              class="bg-blue-500 hover:bg-blue-600 text-white lg:px-6 py-4 rounded"
+                class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center  "
+
             >
               Записатся
             </button>
             <button v-if="consultation.registration"
             @click="Unenroll(consultation)"
-            class="bg-red-500 hover:bg-red-600 text-white lg:px-6 py-4 rounded"
+            class="text-white bg-gradient-to-br from-red-500 to-pink-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+
           >
             отписатся
           </button>
@@ -403,7 +408,8 @@ const filteredConsultations = computed(() => {
             <select v-model="selectedConsultation.teacher.id " 
             @change="selectTeacher(selectedConsultation.teacher.id)"
             :disabled="!isEditing"
-             class="mt-1 w-full border rounded px-3 py-2 dark:bg-gray-800 dark:text-white"
+             class="mt-1  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
              >
               <option v-for="teacher in teacherList" :key="teacher.id" :value="teacher.id">
                 {{ teacher.fname }} {{ teacher.mname }} {{ teacher.lname }} 
@@ -413,12 +419,13 @@ const filteredConsultations = computed(() => {
 
           
           <div>
-            <label class="text-gray-800 dark:text-gray-300"><strong>Предмет:</strong></label><br />
+            <label class="text-gray-800 dark:text-gray-300 "><strong>Предмет:</strong></label><br />
      
             <select
               v-model="editedConsultation.discipline_id"
               :disabled="!isEditing"
-              class="mt-1 w-full border rounded px-3 py-2 dark:bg-gray-800 dark:text-white"
+              class="mt-1  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
             >
               <option
                 v-for="(d, i) in selectedConsultation.teacher.disciplines"
@@ -436,7 +443,8 @@ const filteredConsultations = computed(() => {
               v-model="editedConsultation.class_date"
               :disabled="!isEditing"
               type="date"
-              class="mt-1 w-full border rounded px-3 py-2 dark:bg-gray-800 dark:text-white"
+              class="mt-1 w-full px-3 py-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
             />
           </div>
 
@@ -445,7 +453,8 @@ const filteredConsultations = computed(() => {
             <select
               v-model="editedConsultation.class_number"
               :disabled="!isEditing"
-              class="mt-1 w-full border rounded px-3 py-2 dark:bg-gray-800 dark:text-white"
+              class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
             >
               <option v-for="(time, index) in Class_times" :key="index" :value="index + 1">
                 {{ index + 1 }} пара — {{ time }}
@@ -467,62 +476,75 @@ const filteredConsultations = computed(() => {
 
         <div class="flex justify-end mt-6 space-x-2">
         <div v-if="mode === 'view'" class="flex justify-end mt-6 space-x-2">
-          <button
+          <div class="p-0">
+                      <button
             @click="startEditing"
-            class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
+          class="text-gray-900 bg-gradient-to-r from-yellow-200 to-orange-300 hover:bg-gradient-to-l hover:from-orange-200 hover:to-yellow-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
           >
             Редактировать
           </button>
-
-          <button
+          </div >
+          <div class="p-0">
+                    <button
             @click="deleteConsultation"
-            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+            class="text-white bg-gradient-to-br from-red-500 to-pink-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
           >
             Удалить
           </button>
-
           <button
             @click="closeModal"
-            class="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
+            class="text-white bg-gradient-to-br from-lime-500 to-gray-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+
           >
             Закрыть
           </button>
+
+          </div>
+
         </div>
 
       <div v-if="mode === 'edit'" class="flex justify-end mt-6 space-x-2">
-        <button
+        <div class="p-0">
+          <button
           @click="saveChanges"
-          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-        >
-          Сохранить изменения
-        </button>
-
-        <button
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >
+          Сохранить 
+          </button>
+        </div>
+        <div class="p-0">
+          <button
           @click="deleteConsultation"
-          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-        >
-          Удалить
-        </button>
+          class="text-white bg-gradient-to-br from-red-500 to-pink-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
 
-        <button
+          >
+          Удалить
+          </button>
+
+          <button
           @click="closeModal"
-          class="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
-        >
+          class="text-white bg-gradient-to-br from-lime-500 to-gray-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >
           Закрыть
-        </button>
+          </button>
+        </div>
+
+      <br>
+
       </div>
 
       <div v-if="mode === 'create'" class="flex justify-end mt-6 space-x-2">
         <button
           @click="createConsultation"
-          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
         >
           Создать
         </button>
 
         <button
           @click="closeModal"
-          class="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
+          class="text-white bg-gradient-to-br from-lime-500 to-gray-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+
         >
           Закрыть
         </button>
