@@ -97,18 +97,14 @@ const selectTeacher = (teacherId) => {
   const selectedTeacher = teacherList.value.find(teacher => teacher.id === teacherId);
   if (selectedTeacher) {
 
-    // Заменяем весь объект преподавателя
-    // selectedConsultation.value.teacher = selectedTeacher;
     Object.assign(selectedConsultation.value.teacher, selectedTeacher);
     editedConsultation.value.teacher_id = selectedTeacher.id;
-    // Очищаем дисциплину в случае изменения преподавателя
     editedConsultation.value.discipline_id = null;
 
-    // Если у нового преподавателя есть дисциплины, выбираем первую, иначе сбрасываем дисциплину
     if (selectedTeacher.disciplines.length > 0) {
       editedConsultation.value.discipline_id = selectedTeacher.disciplines[0]?.id || null;
     } else {
-      editedConsultation.value.discipline_id = null; // Если у преподавателя нет дисциплин
+      editedConsultation.value.discipline_id = null; 
     }
   }
 };
@@ -277,7 +273,7 @@ const filteredConsultations = computed(() => {
       ? c.discipline.name.toLowerCase().includes(filterDiscipline.value.toLowerCase())
       : true;
 
-    // Фильтр по дате от и до
+    // Фильтр по дате 
     const consultationDate = new Date(c.class_date);
     const fromDate = filterDateFrom.value ? new Date(filterDateFrom.value) : null;
     const toDate = filterDateTo.value ? new Date(filterDateTo.value) : null;
